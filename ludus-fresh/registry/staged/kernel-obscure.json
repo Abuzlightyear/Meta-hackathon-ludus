@@ -1,0 +1,31 @@
+{
+  "id": "kernel-obscure",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "inquiryPlan(topic:string)",
+      "checkInquiry(item:object,answer:unknown)"
+    ],
+    "outputs": [
+      "InquiryPlan{topic:string,simulationSupported:false,steps:string[],supportedParts:string[],unsupportedParts:string[]}",
+      "CheckResult{correct:boolean,scored:false,factual:false,expected:string,given:unknown,feedback:string}"
+    ],
+    "errors": []
+  },
+  "dependencies": [],
+  "sourceHash": "c2fff6305781da646ad0c14a9c7f24bebbc864ec1375ce6dd51bf5ae8e934e96",
+  "provenance": {
+    "source": "ludus-fresh/src/kernels/obscure.js (new; simulationSupported:false honesty contract mirrors gold genericTopicScene)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "No bespoke simulation and no verified topic facts (simulationSupported:false, checker scored:false/factual:false); factual teaching needs the labelled Wikipedia lookup in the adapter bridge."
+  ]
+}

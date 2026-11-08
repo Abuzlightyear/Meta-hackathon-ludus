@@ -1,0 +1,44 @@
+{
+  "id": "thinking-engine",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "codeResponse(input:object)",
+      "normalizeConfidence(confidence:unknown)",
+      "elicit(item:object,response:object)",
+      "createTeachingRecord()",
+      "recordExperience(record:object,entry:object)",
+      "markMastered(record:object,skill:string,transferEvidence:string)",
+      "evidenceFor(record:object,skill:string)",
+      "summariseThinking(record:object)",
+      "branchPlan(kernel:object,coreCorrect:number)"
+    ],
+    "outputs": [
+      "CodedResponse{code:slip|misread|prereq-gap|misconception|sound,correct:boolean,confidence:number,evidence:string}",
+      "TeachingRecord{skills:object,entries:object[]}",
+      "DiagnosticResult{kernelId:string,level:string,path:string,correct:number,total:number,asked:number,coded:object[]}"
+    ],
+    "errors": [
+      "INSUFFICIENT_ANSWERS",
+      "INVALID_KERNEL",
+      "WRONG_PHASE"
+    ]
+  },
+  "dependencies": [],
+  "sourceHash": "7a1f1b42b2f39ff2301dee0b5fb71277c8b7afe61591a4453fc7244f68e45b54",
+  "provenance": {
+    "source": "ludus-fresh/src/thinking.js (new; branching shape mirrors gold src/diagnosis.js, see file header)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/thinking.test.mjs + tests/adaptive.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Slip coding is deterministic and rule-based over observable evidence; it does not read minds and carries its evidence string.",
+    "Adaptive session asks 5-6 scored/unscored items in tests (within the 5-10 contract); mastery still requires an unaided transfer via markMastered."
+  ]
+}

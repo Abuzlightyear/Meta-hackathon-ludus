@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LUDUS — Learn with Professor D, the Doctore</title>
+<meta name="description" content="LUDUS: talk with Professor D, the Doctore. He guides you through a living scene until you can do it unaided.">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#type-input">Skip to conversation</a>
+<div id="demo-banner" class="banner" role="status" hidden><strong>Limited offline demo</strong> — no live AI credentials on the server, so Professor D is using its built-in curriculum engine. Responses are real and deterministic, but this is not a live AI model.</div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">L</span>
+    <span class="brand-text"><strong>LUDUS</strong><small>Professor D · the Doctore</small></span>
+  </div>
+  <div class="topbar-right">
+    <button type="button" id="btn-back" class="back-btn" aria-label="Back — learn something different">← Learn something different</button>
+    <span id="mode-pill" class="mode-pill" role="status">Checking mode…</span>
+    <p id="tie-label" class="tie-label">Tie: Charcoal — Academy</p>
+  </div>
+</header>
+
+<main id="main" class="layout">
+  <section class="wall-panel" aria-label="Learning environment">
+    <div id="world-host" aria-label="Interactive learning world"></div>
+    <div id="phase-panel" aria-live="polite"></div>
+  </section>
+
+  <aside class="character-panel" aria-label="Professor D">
+    <figure class="character-fig">
+      <div class="character-stage">
+        <img id="doctore-img" class="doctore-img" src="/assets/doctore-present.jpg" alt="Professor D, the Doctore" data-pose="present" width="348" height="280">
+        <img id="doctore-img-alt" class="doctore-img-alt" src="/assets/doctore-present.jpg" alt="" aria-hidden="true">
+        <div class="stage-light" aria-hidden="true"></div>
+        <div class="speech-ring" aria-hidden="true"></div>
+        <div id="stage-state" class="stage-state" role="status">Ready to teach</div>
+      </div>
+      <figcaption><strong>Professor D</strong> <span class="tutor-sub">the Doctore</span></figcaption>
+    </figure>
+    <div class="caption-row">
+      <p id="voice-status" role="status"></p>
+      <div id="voice-wave" class="voice-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+      <button type="button" id="btn-captions" class="caption-btn" aria-pressed="true">Captions on</button>
+    </div>
+    <div id="speech-bubble" class="speech-bubble" aria-live="polite">What would you like to learn today?</div>
+    <div id="passport-strip" class="passport-strip" role="status"></div>
+    <div id="history-drawer" class="history-drawer" aria-label="Conversation history with Professor D" hidden></div>
+  </aside>
+</main>
+
+<div class="composer">
+  <form id="type-form" class="composer-form">
+    <label class="composer-label" for="type-input">Talk to Professor D</label>
+    <input id="type-input" type="text" maxlength="500" autocomplete="off" placeholder="Ask, answer, or name a topic…">
+    <button type="submit" class="primary send-btn">Send</button>
+  </form>
+  <nav class="dock" aria-label="Talk controls">
+    <button type="button" class="dock-btn" id="btn-talk" aria-label="Microphone — push and talk"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span>Talk</span></button>
+    <button type="button" class="dock-btn" id="btn-type" aria-label="History — show the conversation so far" aria-expanded="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>History</span></button>
+    <button type="button" class="dock-btn" id="btn-mute" aria-label="Mute yourself — he will not hear you" aria-pressed="false"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 10v4h3l5 4V6l-5 4H4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg><span>You: live</span></button>
+  </nav>
+</div>
+
+<footer class="foot"><small>Your topic stays in this session — nothing is saved or shared. If a topic has no worked examples yet, Professor D says so rather than guessing.</small></footer>
+<script type="module" src="/stage.js"></script>
+</body>
+</html>

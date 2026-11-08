@@ -1,0 +1,39 @@
+{
+  "id": "scene-director",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "validateCommand(cmd:unknown,scene:SceneSpec)",
+      "applyCommand(scene:SceneSpec,cmd:Command)",
+      "rebuildOnStruggle(ctx:object)"
+    ],
+    "outputs": [
+      "CommandValidation{valid:boolean,errors[]}",
+      "SceneSpec"
+    ],
+    "errors": [
+      "INVALID_COMMAND",
+      "INVALID_SCENE"
+    ]
+  },
+  "dependencies": [
+    "scene-spec",
+    "professor-character",
+    "safety-filter"
+  ],
+  "sourceHash": "7353d20c445624dc14bef5daa27489021a92027edba39116f634a596d3bc312c",
+  "provenance": {
+    "source": "src/scene-director.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Offline directors are deterministic templates; live-AI directing needs META_AI_API_KEY (absent) and is unverified live."
+  ]
+}

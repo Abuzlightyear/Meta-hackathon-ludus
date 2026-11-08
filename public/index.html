@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LUDUS — Learn with Professor D, the Doctore</title>
+<meta name="description" content="LUDUS Academy: tell Professor D, the Doctore, what you want to learn, and he will diagnose, plan, teach, and check your understanding.">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true">L</span><div><strong>LUDUS</strong><small>Professor D, the Doctore — adaptive learning</small></div></div>
+  <nav aria-label="Views"><span class="navbtn" aria-current="page">Learn</span><a class="navbtn" href="/aegis">Built with AEGIS V2</a></nav>
+</header>
+<div id="demo-banner" class="banner" role="status" hidden><strong>Limited offline demo</strong> — no live AI credentials on the server, so Professor D is using its built-in curriculum engine. Responses are real and deterministic, but this is not a live AI model.</div>
+<main id="main">
+  <section id="view-learn">
+    <div class="progress" aria-label="Learning progress"><ol id="crumbs"></ol></div>
+    <section class="academy-stage" aria-label="LUDUS Academy stage">
+      <div class="wall" aria-label="Interactive teaching wall">
+        <div id="academy-host" aria-label="LUDUS Academy Living Classroom"></div>
+        <div id="world-host" aria-label="Interactive learning world"></div>
+        <details class="lesson-details">
+          <summary>Lesson &amp; questions</summary>
+          <div id="stage" aria-live="polite"></div>
+        </details>
+      </div>
+      <img id="doctore-img" class="doctore-img" src="/assets/doctore-present.jpg" alt="Professor D, the Doctore, welcoming you to LUDUS Academy" data-pose="present">
+      <div class="stage-bar">
+        <p id="doctore-caption">Welcome to LUDUS Academy. I am Professor D, your Doctore. Push Talk and ask me anything.</p>
+        <p id="tie-label" class="tie-label">Tie: Charcoal — Academy</p>
+        <p id="voice-status" role="status"></p>
+        <div id="speech-bubble" class="speech-bubble" aria-live="polite">Push Talk and ask me anything.</div>
+        <div id="chat-log" class="history-drawer" aria-live="polite" aria-label="Conversation history with Professor D" hidden></div>
+        <form id="chat-form" hidden>
+          <label for="chat-input">Type to Professor D</label>
+          <div class="row"><input id="chat-input" type="text" maxlength="500" autocomplete="off" placeholder="Type here, press Enter to send"><button type="submit" class="primary" style="width:auto;margin-top:0">Send</button></div>
+        </form>
+        <nav class="dock" aria-label="Talk controls">
+          <button type="button" class="dock-btn" id="btn-mic" aria-label="Microphone — push and talk">🎤<span>Talk</span></button>
+          <button type="button" class="dock-btn" id="btn-type" aria-label="Chat — type a question" aria-expanded="false">💬<span>Type</span></button>
+          <button type="button" class="dock-btn" id="btn-mute" aria-label="Mute yourself — he will not hear you" aria-pressed="false">🔊<span>You: live</span></button>
+        </nav>
+      </div>
+    </section>
+  </section>
+</main>
+<footer><small>Professor D never executes AI-generated code. Tools come from a fixed allowlist. Your topic stays in this session.</small></footer>
+<script type="module" src="/doctore.js"></script>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

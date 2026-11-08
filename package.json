@@ -1,0 +1,14 @@
+{
+  "name": "professor-d",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Professor D — adaptive AI educator (AEGIS V2)",
+  "scripts": {
+    "start": "node server/server.mjs",
+    "build": "node -e \"import('./server/build-check.mjs')\"",
+    "test": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+    "test:report": "node tools/aegis/test-report.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

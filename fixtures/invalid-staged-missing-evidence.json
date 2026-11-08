@@ -1,0 +1,20 @@
+{
+  "id": "example-widget",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "render(input:string)"
+    ],
+    "outputs": [
+      "WidgetView{html:string}"
+    ],
+    "errors": [
+      "INVALID_INPUT"
+    ]
+  },
+  "dependencies": [],
+  "provenance": {
+    "source": "fixtures/staged-example.component.json (synthetic example, not a real component)"
+  },
+  "limitations": []
+}

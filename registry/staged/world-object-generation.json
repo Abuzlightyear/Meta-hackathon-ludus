@@ -1,0 +1,24 @@
+{
+  "id": "world-object-generation",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": ["createObject(type:string,options:object)", "createObjects(specs:array)"],
+    "outputs": ["ObjectResult{ok:boolean,object?:ObjectSpec,error?:object}", "ObjectsResult{ok:boolean,objects?:ObjectSpec[],error?:object}"],
+    "errors": ["UNKNOWN_TYPE", "INVALID_OBJECT", "DUPLICATE_ID", "INVALID_SPECS"]
+  },
+  "dependencies": ["scene-spec", "world-objects"],
+  "sourceHash": "abada4959ca61b14090ed04a79067643aa3538761f9a20f77ec041e6de09eb92",
+  "provenance": { "source": "src/world/objects.js" },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (world/: typed factory dispatch covers all categories; unknown type rejected)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Dispatches over the 26 types in src/world-objects.js; a new type needs a factory, render branch and schema enum together.",
+    "Validates via validateObjectSpec only; teaching quality of purpose text is not judged."
+  ]
+}

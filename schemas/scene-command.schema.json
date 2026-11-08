@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis-v2.local/schemas/scene-command.schema.json",
+  "title": "Dynamic Learning World — Scene Director Command",
+  "description": "Validated commands the AI Scene Director may emit. Mirrors src/scene-director.js (validateCommand / applyCommand, DIRECTOR_COMMANDS, ANIMATION_EVENTS). Only the 12 allowlisted verbs are valid; arbitrary JavaScript, eval, shell or unknown verbs are rejected and never executed. JSON Schema expresses per-verb shape; semantic rules JSON Schema cannot express (bad-ref: target objectId must exist in the scene, duplicate-id on create-object, safety-filter on prompt text) are enforced by validateCommand in src/scene-director.js and return structured {path, rule, message} errors. The server endpoint POST /api/world/direct validates the scene (scene.schema.json / validateSceneSpec) and then the command before applying it with the pure reducer applyCommand.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["type"],
+  "properties": {
+    "type": { "$ref": "#/$defs/commandType" }
+  },
+  "allOf": [
+    { "$ref": "#/$defs/cmdCreateObject" },
+    { "$ref": "#/$defs/cmdPlaceObject" },
+    { "$ref": "#/$defs/cmdTargeted" },
+    { "$ref": "#/$defs/cmdProfessorMove" },
+    { "$ref": "#/$defs/cmdProfessorGesture" },
+    { "$ref": "#/$defs/cmdZoomViewport" },
+    { "$ref": "#/$defs/cmdAnimateEvent" },
+    { "$ref": "#/$defs/cmdPrompted" },
+    { "$ref": "#/$defs/cmdRebuildOnStruggle" }
+  ],
+  "$defs": {
+    "kebabId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 1
+    },
+    "commandType": {
+      "type": "string",
+      "enum": [
+        "create-object", "place-object", "reveal-object", "hide-object", "highlight-object",
+        "professor-move", "professor-gesture", "zoom-viewport", "animate-event",
+        "ask-manipulate", "observe", "rebuild-on-struggle"
+      ]
+    },
+    "animationEvent": {
+      "type": "string",
+      "enum": ["evaporate", "condense", "rain", "grow", "divide-pizza", "test-load", "none"]
+    },
+    "professorGesture": {
+      "type": "string",
+      "enum": ["idle", "walk", "turn", "point", "present", "think", "listen", "encourage", "demonstrate"]
+    },
+    "objectSpec": { "$ref": "scene.schema.json#/$defs/objectSpec" },
+    "cmdCreateObject": {
+      "if": { "properties": { "type": { "const": "create-object" } }, "required": ["type"] },
+      "then": {
+        "required": ["object"],
+        "properties": {
+          "object": { "$ref": "#/$defs/objectSpec" }
+        }
+      }
+    },
+    "cmdPlaceObject": {
+      "if": { "properties": { "type": { "const": "place-object" } }, "required": ["type"] },
+      "then": {
+        "required": ["objectId"],
+        "properties": {
+          "objectId": { "$ref": "#/$defs/kebabId" },
+          "x": { "type": "number" },
+          "y": { "type": "number" },
+          "scale": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 }
+        }
+      }
+    },
+    "cmdTargeted": {
+      "if": {
+        "properties": {
+          "type": { "enum": ["reveal-object", "hide-object", "highlight-object"] }
+        },
+        "required": ["type"]
+      },
+      "then": {
+        "required": ["objectId"],
+        "properties": {
+          "objectId": { "$ref": "#/$defs/kebabId" }
+        }
+      }
+    },
+    "cmdProfessorMove": {
+      "if": { "properties": { "type": { "const": "professor-move" } }, "required": ["type"] },
+      "then": {
+        "required": ["x", "y"],
+        "properties": {
+          "x": { "type": "number" },
+          "y": { "type": "number" }
+        }
+      }
+    },
+    "cmdProfessorGesture": {
+      "if": { "properties": { "type": { "const": "professor-gesture" } }, "required": ["type"] },
+      "then": {
+        "required": ["gesture"],
+        "properties": {
+          "gesture": { "$ref": "#/$defs/professorGesture" }
+        }
+      }
+    },
+    "cmdZoomViewport": {
+      "if": { "properties": { "type": { "const": "zoom-viewport" } }, "required": ["type"] },
+      "then": {
+        "required": ["zoom"],
+        "properties": {
+          "zoom": { "type": "number", "exclusiveMinimum": 0, "maximum": 8 }
+        }
+      }
+    },
+    "cmdAnimateEvent": {
+      "if": { "properties": { "type": { "const": "animate-event" } }, "required": ["type"] },
+      "then": {
+        "required": ["event"],
+        "properties": {
+          "event": { "$ref": "#/$defs/animationEvent" },
+          "objectId": { "$ref": "#/$defs/kebabId" }
+        }
+      }
+    },
+    "cmdPrompted": {
+      "if": {
+        "properties": {
+          "type": { "enum": ["ask-manipulate", "observe"] }
+        },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "objectId": { "$ref": "#/$defs/kebabId" },
+          "prompt": { "type": "string" }
+        }
+      }
+    },
+    "cmdRebuildOnStruggle": {
+      "if": { "properties": { "type": { "const": "rebuild-on-struggle" } }, "required": ["type"] },
+      "then": {
+        "required": ["misconception"],
+        "properties": {
+          "misconception": { "type": "string", "minLength": 1 },
+          "strategy": { "type": "string" }
+        }
+      }
+    }
+  }
+}

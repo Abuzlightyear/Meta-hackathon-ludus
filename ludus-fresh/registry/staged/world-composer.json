@@ -1,0 +1,55 @@
+{
+  "id": "world-composer",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "composeScene(spec:object)",
+      "buildWorld(kernelInput:unknown,options:object)",
+      "sceneForTopic(topic:string,options:object)",
+      "genericTopicScene(topic:string,options:object)",
+      "createWorldState(scene:object,options:object)",
+      "applyInteraction(state:object,event:object)",
+      "rebuildScene(state:object,options:object)",
+      "applyCodedResponse(state:object,coded:object)",
+      "renderSceneToSVG(scene:object,options:object)",
+      "validateSceneSpec(scene:unknown)",
+      "validateObjectSpec(obj:unknown,index:number,seenIds:object)",
+      "computeReadout(kernelId:string,params:object)"
+    ],
+    "outputs": [
+      "SceneSpec{id:string,topic:string,title:string,objects:object[],professor:object,viewport:object}",
+      "SceneValidation{valid:boolean,errors:object[]}",
+      "SVGString"
+    ],
+    "errors": [
+      "INVALID_SCENE",
+      "INVALID_OBJECT"
+    ]
+  },
+  "dependencies": [
+    "subject-kernels",
+    "kernel-maths",
+    "kernel-clouds",
+    "kernel-animals",
+    "kernel-engineering-castle",
+    "kernel-business",
+    "kernel-obscure",
+    "safety-filter"
+  ],
+  "sourceHash": "36aeba9043662d726c055b5c3befe44bdd74fda350c6886d84a0a5454a141836",
+  "provenance": {
+    "source": "ludus-fresh/src/world.js (one composer; truth computed by fresh kernels, wall renders the computation)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Wall rendering is SVG strings; pixel composition in a real browser remains founder-gated (no browser engine in this environment, none installed).",
+    "The world validator checks structure/actions; the typed scene contract in src/scene-spec.js additionally gates unsafe labels/topics."
+  ]
+}

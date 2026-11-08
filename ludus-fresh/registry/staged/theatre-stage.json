@@ -1,0 +1,40 @@
+{
+  "id": "theatre-stage",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "tieForKernel(kernelId:string)",
+      "poseForPhase(phase:string)",
+      "latestLine(text:string)"
+    ],
+    "outputs": [
+      "StageView{wallScene:SceneSpec,bubble:string,doctorePose:string,tieAsset:string|null}"
+    ],
+    "errors": [
+      "INVALID_SCENE"
+    ]
+  },
+  "dependencies": [
+    "thinking-engine",
+    "subject-kernels",
+    "world-composer",
+    "adapter-bridge",
+    "safety-filter"
+  ],
+  "sourceHash": "b909c0820b31765470a1f2077192d1c2b8699c7b0446ca77292359d3022fa7d4",
+  "provenance": {
+    "source": "ludus-fresh/public/stage.js (+ public/index.html, public/styles.css, server.mjs routes)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/stage.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Founder browser/sound/pixel gates pending: Doctore cut-out pixels, walk/pose composition, spoken sound and mic quality are unverified by eye/ear (no browser engine available, none installed).",
+    "Browser speech recognition/synthesis vary by browser; Type always carries the full session when voice/mic is unavailable."
+  ]
+}

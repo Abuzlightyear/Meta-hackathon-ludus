@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis-v2.local/schemas/blueprint.schema.json",
+  "title": "AEGIS V2 Blueprint",
+  "description": "Machine-valid blueprint schema mirrored by tools/aegis/validate.mjs (specs/AEGIS_V2.md). Semantic rules the JSON Schema cannot express (unknown/circular dependencies, contract version pins, operations subset of contract) are enforced by the validator.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "version", "components", "metadata"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "minLength": 1 },
+    "version": { "$ref": "#/$defs/semver" },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/component" }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["name", "description", "aegisVersion", "target", "createdFor"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "aegisVersion": { "$ref": "#/$defs/semver" },
+        "target": { "type": "string", "minLength": 1 },
+        "createdFor": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+    },
+    "componentId": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$", "minLength": 1 },
+    "contract": {
+      "type": "object",
+      "required": ["inputs", "outputs", "errors"],
+      "properties": {
+        "inputs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "outputs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "errors": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" } }
+      },
+      "additionalProperties": true
+    },
+    "dependency": {
+      "description": "Component id, optionally pinned as id@semver; the pin must equal the target component version (contract version check). Object form {id, version} is also accepted.",
+      "anyOf": [
+        { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?:@.+)?$" },
+        {
+          "type": "object",
+          "required": ["id"],
+          "properties": {
+            "id": { "$ref": "#/$defs/componentId" },
+            "version": { "$ref": "#/$defs/semver" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "component": {
+      "type": "object",
+      "required": ["id", "version", "contract", "dependencies", "tests", "operations"],
+      "properties": {
+        "id": { "$ref": "#/$defs/componentId" },
+        "version": { "$ref": "#/$defs/semver" },
+        "contract": { "$ref": "#/$defs/contract" },
+        "dependencies": { "type": "array", "items": { "$ref": "#/$defs/dependency" } },
+        "tests": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "operations": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" } }
+      },
+      "additionalProperties": true
+    }
+  }
+}

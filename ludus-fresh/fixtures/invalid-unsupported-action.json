@@ -1,0 +1,22 @@
+{
+  "id": "unsupported-action-scene",
+  "topic": "castles",
+  "title": "Castle wall with an unsupported director action",
+  "objects": [
+    {
+      "id": "wall-1",
+      "type": "wall",
+      "x": 400,
+      "y": 300,
+      "scale": 1,
+      "rotation": 0,
+      "appearance": { "fill": "#8c6a2f" },
+      "label": "Castle wall",
+      "actions": ["executeArbitraryCode"],
+      "interactive": true,
+      "purpose": "Negative fixture: this action is not in the allowlist and must be rejected."
+    }
+  ],
+  "professor": { "x": 80, "y": 300, "gesture": "teleport" },
+  "viewport": { "w": 800, "h": 450, "zoom": 1 }
+}

@@ -1,0 +1,35 @@
+{
+  "id": "world-state-sync",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "syncInteraction(store:StudentStateStore,evt:object)",
+      "recordWorldAdaptation(store:StudentStateStore,evt:object)"
+    ],
+    "outputs": [
+      "SyncResult{synced:boolean}"
+    ],
+    "errors": [
+      "INVALID_STORE"
+    ]
+  },
+  "dependencies": [
+    "student-state-store",
+    "scene-director"
+  ],
+  "sourceHash": "ddf8229fdd8b8f6fbb642661bfa517cc2e14f451f44b35aaab6ce3684cc51806",
+  "provenance": {
+    "source": "src/world-state.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Session-scoped like the rest of student state; no persistence across tabs."
+  ]
+}

@@ -1,0 +1,47 @@
+// kernel-clouds — temperature+humidity -> stage/type, computed. Gold import only.
+import { cloudTypeFor, waterCycleStage } from "../../../src/simulations.js";
+export { cloudTypeFor, waterCycleStage };
+const clamp = (v, lo, hi, fb) => { const n = Number(v); return Number.isFinite(n) ? Math.max(lo, Math.min(hi, n)) : fb; };
+export function computeClouds({ temperature = 24, humidity = 60 } = {}) {
+  const t = clamp(temperature, -30, 50, 24), h = clamp(humidity, 0, 100, 60);
+  return cloudTypeFor({ temperature: t, humidity: h });
+}
+export function checkClouds(item, answer) {
+  let expected = item.answer;
+  if (item.params) expected = item.expectFrom === "cloudType" ? computeClouds(item.params).cloudType : computeClouds(item.params).stage;
+  const norm = (s) => String(s ?? "").trim().toLowerCase().replace(/[-_]+/g, " ").replace(/\s+/g, " ");
+  const head = norm(expected).split(" (")[0];
+  const correct = norm(answer) === norm(expected) || norm(answer) === head;
+  return { correct, expected, given: answer, feedback: correct ? "Matches the computed formation for those conditions." : `For ${item.params ? `${item.params.temperature}°C, ${item.params.humidity}%` : "those conditions"} the computed result is "${expected}". Humidity drives stage: <45 evaporation/condensation, 45-74 cloud-formation, ≥75 precipitation.` };
+}
+const mk = (kind) => (id, skill, prereq, q, answer, extra = {}) => ({ id, kind, scored: true, skill, prereq, q, prompt: q, answer, ...extra });
+const D = mk("diagnostic"), P = mk("practice"), T = mk("transfer");
+export const cloudsKernel = {
+  id: "clouds", title: "Clouds — the water cycle in the sky",
+  concepts: ["Evaporation: liquid water becomes vapour", "Condensation: vapour cools into droplets", "Cloud type depends on temperature and humidity", "Precipitation falls when droplets grow heavy"],
+  prerequisites: ["that water can be liquid, vapour or ice", "what temperature and humidity describe", "cause and effect in a cycle"],
+  misconceptions: ["Thinking clouds are made of smoke", "Thinking clouds form without condensation", "Thinking rain comes from holes in clouds"],
+  // Planned ladder: heavy rain day -> dry day -> building cloud, then probes.
+  diagnostic: [
+    D("c-diag-1", "water-cycle-stage", "cause and effect in a cycle", "On a warm, saturated day (24°C, humidity 90%) the air can hold no more vapour and droplets have grown heavy. Which stage of the water cycle is happening? Answer: evaporation, cloud-formation, or precipitation.", "precipitation", { params: { temperature: 24, humidity: 90 }, expectFrom: "stage", misconceptionKeywords: ["smoke"], purpose: "Starts at the end of the cycle everyone knows — falling rain — and asks you to name its stage.", feedback: "That is precipitation. At humidity 75% or more, droplets are too heavy to stay up and fall. Rain is the cycle delivering water back down." }),
+    D("c-diag-2", "cloud-formation", "what temperature and humidity describe", "Now the opposite: a dry day at 24°C with humidity only 10%. What would you expect to see in the sky? Answer: clear sky, cumulus, or nimbostratus.", "clear sky", { params: { temperature: 24, humidity: 10 }, expectFrom: "cloudType", purpose: "The contrast case: can dry air make clouds at all?", feedback: "Clear sky. Below about 25% humidity there is not enough vapour to condense into a visible cloud, however warm it is." }),
+    D("c-diag-3", "condensation", "that water can be liquid, vapour or ice", "Cool, moist air (10°C, humidity 50%) rises, and its invisible vapour turns into tiny visible droplets. Which stage is this? Answer: evaporation, cloud-formation, or precipitation.", "cloud-formation", { params: { temperature: 10, humidity: 50 }, expectFrom: "stage", purpose: "The middle of the cycle: vapour becoming a cloud, condensation itself.", feedback: "Cloud-formation. Between roughly 45% and 74% humidity, vapour condenses into droplets that hang as cloud — not heavy enough to fall yet." }),
+    { ...P("c-diag-4", "water-cycle-stage", "cause and effect in a cycle", "Think of puddles shrinking on a hot, dry morning (28°C, humidity 5%) as water turns into invisible vapour. Which stage is that? Answer: evaporation, cloud-formation, or precipitation.", "evaporation", { params: { temperature: 28, humidity: 5 }, expectFrom: "stage" }), purpose: "Foundation probe: the start of the cycle, liquid becoming vapour.", feedback: "Evaporation. Warm, dry air pulls water up as vapour — that is where every cloud's water begins." },
+    { ...P("c-diag-5", "condensation", "that water can be liquid, vapour or ice", "Air at 24°C with humidity 60% cools as it rises, and a visible cloud appears where there was none. Which stage forms that cloud? Answer: evaporation, cloud-formation, or precipitation.", "cloud-formation", { params: { temperature: 24, humidity: 60 }, expectFrom: "stage" }), purpose: "Foundation probe: condensation named in plain words before the label.", feedback: "Cloud-formation again: cooling moist air condenses vapour into droplets. Same stage as before, warmer air — humidity is doing the deciding." },
+    { ...T("c-diag-6", "water-cycle-stage", "cause and effect in a cycle", "A cool, soaked morning: 18°C and humidity 80%, with steady drizzle. Which stage is the cycle in? Answer: evaporation, cloud-formation, or precipitation.", "precipitation", { params: { temperature: 18, humidity: 80 }, expectFrom: "stage" }), purpose: "Stretch probe: saturated air at a new temperature — is humidity still your guide?", feedback: "Precipitation. Temperature changed, the answer did not: at 75% humidity or more, droplets fall. Humidity drives the stage." },
+    { ...T("c-diag-7", "cloud-formation", "what temperature and humidity describe", "A pleasant afternoon at 24°C with humidity 30% — just enough moisture for small, puffy, fair-weather clouds. Which cloud type forms? Answer: clear sky, cumulus, or nimbostratus.", "cumulus (small, puffy)", { params: { temperature: 24, humidity: 30 }, expectFrom: "cloudType" }), purpose: "Stretch probe: from stage to naming the actual cloud type.", feedback: "Cumulus — small and puffy. At 25–44% humidity there is enough vapour for fair-weather clouds, but not rain clouds." },
+  ],
+  practice: [
+    P("c-prac-1", "cloud-formation", "what temperature and humidity describe", "Moist air at 24°C and 60% humidity rises and cools on a hill slope. Which stage would you see happening? Answer: evaporation, cloud-formation, or precipitation.", "cloud-formation", { params: { temperature: 24, humidity: 60 }, expectFrom: "stage", purpose: "Practises reading humidity in the cloud-building band, in a new scene.", feedback: "Cloud-formation: 60% humidity sits in the 45–74% band where vapour condenses into a growing cloud layer." }),
+    P("c-prac-2", "water-cycle-stage", "cause and effect in a cycle", "A desert afternoon at 28°C with humidity just 5%: wet washing dries in minutes. Which stage dominates? Answer: evaporation, cloud-formation, or precipitation.", "evaporation", { params: { temperature: 28, humidity: 5 }, expectFrom: "stage", purpose: "Practises the dry end of the scale: spotting evaporation outside the sky.", feedback: "Evaporation. Dry, warm air takes water up as vapour fast — no clouds form at 5% humidity." }),
+    P("c-prac-3", "cloud-formation", "what temperature and humidity describe", "A dark, heavy rain cloud hangs over the town at 24°C and 90% humidity. Which cloud type is it? Answer: clear sky, cumulus, or nimbostratus.", "nimbostratus", { params: { temperature: 24, humidity: 90 }, expectFrom: "cloudType", purpose: "Practises naming the rain-bearing cloud type, not just the stage.", feedback: "Nimbostratus — the thick rain cloud. Saturated air (around 90%) builds the cloud that actually delivers precipitation." }),
+  ],
+  transfer: [
+    T("c-tr-1", "water-cycle-stage", "cause and effect in a cycle", "Fresh conditions you have not seen: a cold, drenched dawn at 5°C with humidity 85%. Which stage is the cycle in? Answer: evaporation, cloud-formation, or precipitation.", "precipitation", { params: { temperature: 5, humidity: 85 }, expectFrom: "stage", purpose: "Unaided check: new numbers, same humidity rule.", feedback: "Precipitation: 85% humidity is past the 75% threshold, whatever the temperature." }),
+    T("c-tr-2", "cloud-formation", "what temperature and humidity describe", "Fresh conditions: a bright day at 30°C with humidity 35%, and small puffy clouds dotted about. Which cloud type is that? Answer: clear sky, cumulus, or nimbostratus.", "cumulus (small, puffy)", { params: { temperature: 30, humidity: 35 }, expectFrom: "cloudType", purpose: "Unaided check: naming cloud type under new conditions.", feedback: "Cumulus. The 25–44% band makes small fair-weather clouds, even on a hot day." }),
+    T("c-tr-3", "condensation", "that water can be liquid, vapour or ice", "Fresh conditions: mist forms over a river at 15°C with humidity 65% as the air cools at dusk. Which stage is this? Answer: evaporation, cloud-formation, or precipitation.", "cloud-formation", { params: { temperature: 15, humidity: 65 }, expectFrom: "stage", purpose: "Unaided check: condensation recognised at ground level, as mist.", feedback: "Cloud-formation: mist is a cloud at ground level, vapour condensed at 65% humidity." }),
+  ],
+  checker: checkClouds,
+  compute: { clouds: computeClouds, stage: waterCycleStage },
+};
+export default cloudsKernel;

@@ -1,0 +1,37 @@
+{
+  "topic": "how to make a bomb",
+  "scene": {
+    "id": "unsafe-scene",
+    "topic": "how to make a bomb",
+    "title": "Unsafe topic scene",
+    "objects": [
+      {
+        "id": "obj-1",
+        "type": "wall",
+        "x": 100,
+        "y": 100,
+        "scale": 1,
+        "rotation": 0,
+        "appearance": {
+          "fill": "#888888"
+        },
+        "label": "how to make a bomb",
+        "actions": [
+          "none"
+        ],
+        "interactive": false,
+        "purpose": "Negative fixture."
+      }
+    ],
+    "professor": {
+      "x": 80,
+      "y": 300,
+      "gesture": "present"
+    },
+    "viewport": {
+      "w": 800,
+      "h": 450,
+      "zoom": 1
+    }
+  }
+}

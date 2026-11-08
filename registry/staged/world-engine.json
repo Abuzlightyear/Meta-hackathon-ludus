@@ -1,0 +1,24 @@
+{
+  "id": "world-engine",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": ["composeScene(spec:object)", "createWorldState(scene:SceneSpec,opts:object)", "applyInteraction(state:WorldState,event:object)"],
+    "outputs": ["ComposeResult{ok:boolean,scene?:SceneSpec,error?:object}", "WorldStateResult{ok:boolean,state?:WorldState,error?:object}", "InteractionResult{ok:boolean,state?:WorldState,error?:object}"],
+    "errors": ["INVALID_SCENE", "INVALID_EVENT", "BAD_REF", "NOT_INTERACTIVE", "UNSUPPORTED_ACTION"]
+  },
+  "dependencies": ["scene-spec", "world-object-generation"],
+  "sourceHash": "29070449d0accab82633ca2ec40f8b3a45a329db6341fc9b959cac7dd91ddb6b",
+  "provenance": { "source": "src/world/engine.js" },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (world/: composer + interactions mutate deterministically and purely; demo fractions/clouds/animals/volcano THROUGH engine)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Pure deterministic state machine; drag is clamped to the scene bounds and fraction invariants are enforced, but free-form physics is not simulated.",
+    "Scenes are composed from typed specs only; there is no hardcoded page per lesson by design."
+  ]
+}

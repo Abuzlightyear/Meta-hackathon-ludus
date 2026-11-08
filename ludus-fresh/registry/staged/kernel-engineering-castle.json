@@ -1,0 +1,31 @@
+{
+  "id": "kernel-engineering-castle",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "evaluateDesign(input:object)",
+      "checkCastle(item:object,answer:unknown)"
+    ],
+    "outputs": [
+      "DesignResult{faceArea:number,volumeBlocks:number,thickness:number,holds:boolean,verdict:HOLDS|FALLS}",
+      "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+    ],
+    "errors": []
+  },
+  "dependencies": [],
+  "sourceHash": "af78c968573fa92fcb0192e2539769b8fe1343ccdc9d6330dcb51d6f3990d749",
+  "provenance": {
+    "source": "ludus-fresh/src/kernels/engineering-castle.js (imports gold castleState/testCastleDesign/testDesign from src/simulations.js)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Design rule is the taught threshold (thickness>=2 and height>=3), not structural engineering advice."
+  ]
+}

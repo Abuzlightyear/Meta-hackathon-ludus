@@ -1,0 +1,520 @@
+{
+  "id": "professor-d",
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "safety-filter",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "checkTopic(text:string)",
+          "checkContent(text:string)"
+        ],
+        "outputs": [
+          "SafetyResult{allowed:boolean,reason?:string,safeAlternative?:string}"
+        ],
+        "errors": [
+          "EMPTY_INPUT"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/contract/safety-filter.test.ts",
+        "tests/negative/safety-filter.negative.test.ts"
+      ],
+      "operations": [
+        "checkTopic",
+        "checkContent"
+      ]
+    },
+    {
+      "id": "student-state-store",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "getState()",
+          "updateState(patch:Partial<StudentState>)",
+          "resetSession()",
+          "recordTransition(transition:string)"
+        ],
+        "outputs": [
+          "StudentState{sessionId,topic,level,prerequisitesKnown[],prerequisitesMissing[],misconceptions[],mastery,history[]}"
+        ],
+        "errors": [
+          "INVALID_PATCH",
+          "SESSION_NOT_FOUND"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/unit/student-state.test.ts",
+        "tests/integration/learning-state.test.ts"
+      ],
+      "operations": [
+        "getState",
+        "updateState",
+        "resetSession",
+        "recordTransition"
+      ]
+    },
+    {
+      "id": "ai-adapter-meta",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "complete(prompt:ValidatedPrompt)",
+          "healthCheck()"
+        ],
+        "outputs": [
+          "Completion{mode:live|offline-demo,text:string}",
+          "Health{mode:live|offline-demo}"
+        ],
+        "errors": [
+          "AI_UNAVAILABLE",
+          "AI_TIMEOUT",
+          "AI_INVALID_RESPONSE",
+          "MISSING_CREDENTIALS"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/contract/ai-adapter.test.ts",
+        "tests/integration/api-error.test.ts"
+      ],
+      "operations": [
+        "complete",
+        "healthCheck"
+      ]
+    },
+    {
+      "id": "diagnosis-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "generateDiagnostic(topic:string)",
+          "inferDiagnosis(topic:string,answers:Answer[])"
+        ],
+        "outputs": [
+          "Diagnosis{level,prerequisitesKnown[],prerequisitesMissing[],misconceptions[],confidence}"
+        ],
+        "errors": [
+          "INSUFFICIENT_ANSWERS",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "ai-adapter-meta",
+        "student-state-store",
+        "safety-filter"
+      ],
+      "tests": [
+        "tests/unit/diagnosis.test.ts",
+        "tests/contract/diagnosis.contract.test.ts"
+      ],
+      "operations": [
+        "generateDiagnostic",
+        "inferDiagnosis"
+      ]
+    },
+    {
+      "id": "lesson-planner",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "buildPlan(topic:string,diagnosis:Diagnosis)",
+          "revisePlan(plan:Plan,diagnosis:Diagnosis)"
+        ],
+        "outputs": [
+          "Plan{steps:[{id,title,objective,dependsOn[],toolHint}]}"
+        ],
+        "errors": [
+          "NO_PREREQUISITE_PATH",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "diagnosis-engine",
+        "student-state-store"
+      ],
+      "tests": [
+        "tests/unit/lesson-planner.test.ts",
+        "tests/contract/lesson-planner.contract.test.ts"
+      ],
+      "operations": [
+        "buildPlan",
+        "revisePlan"
+      ]
+    },
+    {
+      "id": "teaching-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "explain(step:PlanStep,state:StudentState)",
+          "visualSteps(step:PlanStep)",
+          "workedExample(step:PlanStep)"
+        ],
+        "outputs": [
+          "LessonContent{markdown,visualSteps?,example?,simulationSupported:boolean}"
+        ],
+        "errors": [
+          "UNSUPPORTED_SIMULATION",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "ai-adapter-meta",
+        "lesson-planner",
+        "student-state-store"
+      ],
+      "tests": [
+        "tests/unit/teaching-engine.test.ts",
+        "tests/contract/teaching-engine.contract.test.ts"
+      ],
+      "operations": [
+        "explain",
+        "visualSteps",
+        "workedExample"
+      ]
+    },
+    {
+      "id": "tool-selector",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "selectTool(step:PlanStep,state:StudentState)",
+          "listTools()"
+        ],
+        "outputs": [
+          "ToolChoice{toolId:worked-example|visual-steps|knowledge-check|code-playground-readonly|flashcards|socratic-hints,rationale:string}"
+        ],
+        "errors": [
+          "NO_SUITABLE_TOOL"
+        ]
+      },
+      "dependencies": [
+        "student-state-store",
+        "lesson-planner"
+      ],
+      "tests": [
+        "tests/unit/tool-selector.test.ts",
+        "tests/integration/tool-selection.test.ts"
+      ],
+      "operations": [
+        "selectTool",
+        "listTools"
+      ]
+    },
+    {
+      "id": "assessment-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "generateCheck(step:PlanStep,state:StudentState)",
+          "evaluateAnswer(itemId:string,answer:string,state:StudentState)",
+          "verifyMastery(state:StudentState)"
+        ],
+        "outputs": [
+          "Evaluation{correct:boolean,feedback:string,misconceptionDetected?:string,masteryDelta:number}",
+          "Mastery{mastered:boolean,score:number,remainingMisconceptions[]}"
+        ],
+        "errors": [
+          "UNKNOWN_ITEM",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "ai-adapter-meta",
+        "student-state-store",
+        "teaching-engine"
+      ],
+      "tests": [
+        "tests/unit/assessment.test.ts",
+        "tests/integration/learning-state.test.ts"
+      ],
+      "operations": [
+        "generateCheck",
+        "evaluateAnswer",
+        "verifyMastery"
+      ]
+    },
+    {
+      "id": "aegis-blueprint-validator",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "validateBlueprint(blueprint:unknown)",
+          "checkGraph(components:Component[])"
+        ],
+        "outputs": [
+          "ValidationReport{valid:boolean,errors:[{path,rule,message}]}"
+        ],
+        "errors": [
+          "INVALID_BLUEPRINT"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/unit/aegis-validator.test.ts",
+        "tests/negative/blueprint.negative.test.ts"
+      ],
+      "operations": [
+        "validateBlueprint",
+        "checkGraph"
+      ]
+    },
+    {
+      "id": "aegis-component-registry",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "register(component:Component)",
+          "resolve(id:string,version:string,contractHash:string)",
+          "listVerified()"
+        ],
+        "outputs": [
+          "RegistryEntry{id,version,contractHash,status:candidate|verified|deprecated,reused:boolean}"
+        ],
+        "errors": [
+          "VERSION_MISMATCH",
+          "CONTRACT_MISMATCH",
+          "NOT_FOUND"
+        ]
+      },
+      "dependencies": [
+        "aegis-blueprint-validator"
+      ],
+      "tests": [
+        "tests/unit/aegis-registry.test.ts",
+        "tests/negative/registry.negative.test.ts"
+      ],
+      "operations": [
+        "register",
+        "resolve",
+        "listVerified"
+      ]
+    },
+    {
+      "id": "ui-shell",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "renderFlow(state:StudentState)",
+          "renderAegisView(report:GateReport)"
+        ],
+        "outputs": [
+          "RenderedView{flow:AegisView}"
+        ],
+        "errors": [
+          "MISSING_GATE_REPORT"
+        ]
+      },
+      "dependencies": [
+        "student-state-store",
+        "diagnosis-engine",
+        "lesson-planner",
+        "teaching-engine",
+        "tool-selector",
+        "assessment-engine",
+        "safety-filter"
+      ],
+      "tests": [
+        "tests/e2e/professor-d.flow.spec.ts",
+        "tests/e2e/aegis-view.spec.ts"
+      ],
+      "operations": [
+        "renderFlow",
+        "renderAegisView"
+      ]
+    },
+    {
+      "id": "scene-spec",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["validateSceneSpec(scene:unknown)", "validateObjectSpec(obj:unknown)", "createSceneSpec(spec:object)"],
+        "outputs": ["SceneValidation{valid:boolean,errors:[{path,rule,message}]}", "SceneSpec{id,topic,title,objects[],professor,viewport}"],
+        "errors": ["INVALID_SCENE", "INVALID_OBJECT"]
+      },
+      "dependencies": ["safety-filter"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["validateSceneSpec", "validateObjectSpec", "createSceneSpec"]
+    },
+    {
+      "id": "world-objects",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["createShape(spec:object)", "createFractionPizza(spec:object)", "createCloud(spec:object)", "createAnimal(spec:object)", "createBlock(spec:object)", "createTimeline(spec:object)"],
+        "outputs": ["ObjectSpec{id,type,x,y,scale,appearance,label,actions,interactive,purpose}"],
+        "errors": ["INVALID_OBJECT"]
+      },
+      "dependencies": ["scene-spec"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["createShape", "createFractionPizza", "createCloud", "createAnimal", "createBlock", "createTimeline"]
+    },
+    {
+      "id": "world-renderer",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["renderSceneToSVG(scene:SceneSpec)", "objectSVG(obj:ObjectSpec)"],
+        "outputs": ["SVGString"],
+        "errors": ["INVALID_SCENE"]
+      },
+      "dependencies": ["scene-spec", "professor-character"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["renderSceneToSVG", "objectSVG"]
+    },
+    {
+      "id": "professor-character",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["createProfessor(spec:object)", "moveProfessor(prof:Professor,delta:object)", "setProfessorGesture(prof:Professor,gesture:string)", "professorSVG(prof:Professor)"],
+        "outputs": ["Professor{x,y,gesture,facing}", "SVGString"],
+        "errors": ["UNSUPPORTED_GESTURE"]
+      },
+      "dependencies": [],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["createProfessor", "moveProfessor", "setProfessorGesture", "professorSVG"]
+    },
+    {
+      "id": "scene-director",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["validateCommand(cmd:unknown,scene:SceneSpec)", "applyCommand(scene:SceneSpec,cmd:Command)", "rebuildOnStruggle(ctx:object)"],
+        "outputs": ["CommandValidation{valid:boolean,errors[]}", "SceneSpec"],
+        "errors": ["INVALID_COMMAND", "INVALID_SCENE"]
+      },
+      "dependencies": ["scene-spec", "professor-character", "safety-filter"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["validateCommand", "applyCommand", "rebuildOnStruggle"]
+    },
+    {
+      "id": "world-simulations",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["academyScene()", "fractionsScene(opts:object)", "cloudsScene(opts:object)", "animalsScene(opts:object)", "engineeringScene(opts:object)", "sceneForTopic(topic:string)"],
+        "outputs": ["SceneSpec"],
+        "errors": ["INVALID_SCENE"]
+      },
+      "dependencies": ["world-objects", "scene-spec"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["academyScene", "fractionsScene", "cloudsScene", "animalsScene", "engineeringScene", "sceneForTopic"]
+    },
+    {
+      "id": "world-interactions",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["renderSceneToSVG(scene:SceneSpec)", "validateCommand(cmd:unknown,scene:SceneSpec)"],
+        "outputs": ["RenderedWorld{svg,controls[]}"],
+        "errors": ["INVALID_SCENE", "INVALID_COMMAND"]
+      },
+      "dependencies": ["world-renderer", "scene-director"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["renderSceneToSVG", "validateCommand"]
+    },
+    {
+      "id": "world-state-sync",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["syncInteraction(store:StudentStateStore,evt:object)", "recordWorldAdaptation(store:StudentStateStore,evt:object)"],
+        "outputs": ["SyncResult{synced:boolean}"],
+        "errors": ["INVALID_STORE"]
+      },
+      "dependencies": ["student-state-store", "scene-director"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["syncInteraction", "recordWorldAdaptation"]
+    },
+    {
+      "id": "asset-manager",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["registerAsset(asset:object)", "getAsset(id:string)", "listAssets()"],
+        "outputs": ["Asset{id,source,provenance,license,generated,placeholder}", "AssetResult{ok:boolean,errors[]}"],
+        "errors": ["MISSING_PROVENANCE", "UNAUTHORISED_SOURCE"]
+      },
+      "dependencies": ["scene-spec"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["registerAsset", "getAsset", "listAssets"]
+    },
+    {
+      "id": "world-object-generation",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["createObject(type:string,options:object)", "createObjects(specs:array)"],
+        "outputs": ["ObjectResult{ok:boolean,object?:ObjectSpec,error?:object}", "ObjectsResult{ok:boolean,objects?:ObjectSpec[],error?:object}"],
+        "errors": ["UNKNOWN_TYPE", "INVALID_OBJECT", "DUPLICATE_ID", "INVALID_SPECS"]
+      },
+      "dependencies": ["scene-spec", "world-objects"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["createObject", "createObjects"]
+    },
+    {
+      "id": "world-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["composeScene(spec:object)", "createWorldState(scene:SceneSpec,opts:object)", "applyInteraction(state:WorldState,event:object)"],
+        "outputs": ["ComposeResult{ok:boolean,scene?:SceneSpec,error?:object}", "WorldStateResult{ok:boolean,state?:WorldState,error?:object}", "InteractionResult{ok:boolean,state?:WorldState,error?:object}"],
+        "errors": ["INVALID_SCENE", "INVALID_EVENT", "BAD_REF", "NOT_INTERACTIVE", "UNSUPPORTED_ACTION"]
+      },
+      "dependencies": ["scene-spec", "world-object-generation"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["composeScene", "createWorldState", "applyInteraction"]
+    },
+    {
+      "id": "world-rendering",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["renderSVG(scene:SceneSpec,opts:object)", "objectSVG(obj:ObjectSpec)", "drawSceneToCanvas(ctx:object,scene:SceneSpec,opts:object)", "focusableObjects(scene:SceneSpec)", "nextFocusId(scene:SceneSpec,currentId:string,dir:number)", "prefersReducedMotion(matchMediaFn:function)"],
+        "outputs": ["SVGString", "CanvasResult{ok:boolean,drawn?:number,error?:object}", "FocusableList{objects:ObjectSpec[]}"],
+        "errors": ["INVALID_SCENE", "NO_CONTEXT"]
+      },
+      "dependencies": ["scene-spec", "world-renderer"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["renderSVG", "objectSVG", "drawSceneToCanvas", "focusableObjects", "nextFocusId", "prefersReducedMotion"]
+    },
+    {
+      "id": "world-director",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["validateDirectorCommand(cmd:unknown,scene:SceneSpec)", "applyDirectorCommand(scene:SceneSpec,cmd:Command)", "applyDirectorCommands(scene:SceneSpec,commands:array)", "commandsFromDiagnosis(ctx:object)", "struggleRebuild(ctx:object)", "observeInteraction(ctx:object)"],
+        "outputs": ["CommandValidation{valid:boolean,errors:[{path,rule,message}]}", "DirectorResult{ok:boolean,scene?:SceneSpec,applied?:string[],error?:object}", "RebuildPlan{decision:string,strategy:string,commands:Command[],scene:SceneSpec,newInteraction:object}"],
+        "errors": ["INVALID_COMMAND", "INVALID_SCENE"]
+      },
+      "dependencies": ["scene-spec", "safety-filter", "world-object-generation"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["validateDirectorCommand", "applyDirectorCommand", "applyDirectorCommands", "commandsFromDiagnosis", "struggleRebuild", "observeInteraction"]
+    },
+    {
+      "id": "world-professor-movement",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["professorStateForEvent(event:string)", "transitionProfessor(prof:Professor,eventOrState:string)", "walkProfessorTo(prof:Professor,x:number,y:number)", "professorSVGForState(prof:Professor,opts:object)"],
+        "outputs": ["ProfessorState{state:string}", "Professor{x,y,gesture,facing}", "SVGString"],
+        "errors": ["UNSUPPORTED_GESTURE"]
+      },
+      "dependencies": ["professor-character", "scene-spec"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["professorStateForEvent", "transitionProfessor", "walkProfessorTo", "professorSVGForState"]
+    },
+    {
+      "id": "world-adaptive-loop",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["adaptAfterWrongAnswer(ctx:object)", "checkMastery(topic:string,answers:array,remainingMisconceptions:array)"],
+        "outputs": ["AdaptResult{decision:string,strategy:string,scene:SceneSpec,newInteraction:object,verifyChallenge:array}", "MasteryResult{mastered:boolean,score:number,threshold:number}"],
+        "errors": ["INVALID_SCENE"]
+      },
+      "dependencies": ["world-director", "world-state-sync", "assessment-engine"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["adaptAfterWrongAnswer", "checkMastery"]
+    }
+  ],
+  "metadata": {
+    "name": "Professor D",
+    "description": "Adaptive AI educator built with the AEGIS V2 blueprint-driven verified-component workflow",
+    "aegisVersion": "2.0.0",
+    "target": "vite-typescript-react-mobile-web",
+    "createdFor": "Meta-hackathon-ludus",
+    "aiMode": "server-side-meta-ai-with-labeled-offline-demo-fallback",
+    "firstScreen": "What would you like to learn today?"
+  }
+}

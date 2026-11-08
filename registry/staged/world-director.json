@@ -1,0 +1,24 @@
+{
+  "id": "world-director",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": ["validateDirectorCommand(cmd:unknown,scene:SceneSpec)", "applyDirectorCommand(scene:SceneSpec,cmd:Command)", "applyDirectorCommands(scene:SceneSpec,commands:array)", "commandsFromDiagnosis(ctx:object)", "struggleRebuild(ctx:object)", "observeInteraction(ctx:object)"],
+    "outputs": ["CommandValidation{valid:boolean,errors:[{path,rule,message}]}", "DirectorResult{ok:boolean,scene?:SceneSpec,applied?:string[],error?:object}", "RebuildPlan{decision:string,strategy:string,commands:Command[],scene:SceneSpec,newInteraction:object}"],
+    "errors": ["INVALID_COMMAND", "INVALID_SCENE"]
+  },
+  "dependencies": ["scene-spec", "safety-filter", "world-object-generation"],
+  "sourceHash": "877b6ea336fb0a9ed57e08b0b6148c43cf4b22078f9bd2d6023d6ce57ea3fc6b",
+  "provenance": { "source": "src/world/director.js" },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (world/director: 13 verbs apply purely; negatives malformed/unsupported/bad-ref/unsafe/duplicate; diagnosis mapping + observe decisions)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Offline directors are deterministic templates; live-AI directing needs META_AI_API_KEY (absent) and is unverified live.",
+    "Legacy kebab-case src/scene-director.js (POST /api/world/direct) is preserved unchanged; this camelCase layer serves POST /api/world/director."
+  ]
+}

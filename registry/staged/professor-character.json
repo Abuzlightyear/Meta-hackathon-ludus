@@ -1,0 +1,35 @@
+{
+  "id": "professor-character",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "createProfessor(spec:object)",
+      "moveProfessor(prof:Professor,delta:object)",
+      "setProfessorGesture(prof:Professor,gesture:string)",
+      "professorSVG(prof:Professor)"
+    ],
+    "outputs": [
+      "Professor{x,y,gesture,facing}",
+      "SVGString"
+    ],
+    "errors": [
+      "UNSUPPORTED_GESTURE"
+    ]
+  },
+  "dependencies": [],
+  "sourceHash": "6fcb8fc9b558f581be5b79ed806daf4f1ba4d096f9823fa3522dc1a67ecbd6fa",
+  "provenance": {
+    "source": "src/professor.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Single consistent Scholar-Commander asset; walk is a pose + CSS bob, not skeletal animation."
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "kernel-clouds",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "computeClouds(input:object)",
+      "checkClouds(item:object,answer:unknown)"
+    ],
+    "outputs": [
+      "CloudResult{stage:string,cloudType:string,description:string,density:number}",
+      "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+    ],
+    "errors": []
+  },
+  "dependencies": [],
+  "sourceHash": "69e22ec810e9041f0d5d3fa94955d386e94afe69937fa6891c559d183d484722",
+  "provenance": {
+    "source": "ludus-fresh/src/kernels/clouds.js (imports gold cloudTypeFor/waterCycleStage from src/simulations.js)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Temperature clamped to [-30,50]C and humidity to [0,100]%; school-level water-cycle stages only."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "tool": "aegis-test-report",
+  "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+  "generatedAt": "2026-11-04T13:07:57.071Z",
+  "exitCode": 0,
+  "tests": 62,
+  "pass": 62,
+  "fail": 0,
+  "skipped": 0,
+  "status": "passed"
+}

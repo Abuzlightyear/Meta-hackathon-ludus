@@ -1,0 +1,37 @@
+{
+  "id": "scene-spec",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "validateSceneSpec(scene:unknown)",
+      "validateObjectSpec(obj:unknown)",
+      "createSceneSpec(spec:object)"
+    ],
+    "outputs": [
+      "SceneValidation{valid:boolean,errors:[{path,rule,message}]}",
+      "SceneSpec{id,topic,title,objects[],professor,viewport}"
+    ],
+    "errors": [
+      "INVALID_SCENE",
+      "INVALID_OBJECT"
+    ]
+  },
+  "dependencies": [
+    "safety-filter"
+  ],
+  "sourceHash": "177c0d5084ea2cbc369cfbc67a49db65e1a2fa315f62013e91328c9ef9fe7ba0",
+  "provenance": {
+    "source": "src/scene-spec.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Validates structure and safety of labels only; does not judge teaching quality."
+  ]
+}

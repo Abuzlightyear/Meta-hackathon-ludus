@@ -1,0 +1,48 @@
+{
+  "id": "adapter-bridge",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "complete(prompt:object)",
+      "completeStream(prompt:object)",
+      "healthCheck()",
+      "validatePrompt(prompt:unknown)",
+      "validateCompletion(json:unknown)",
+      "extractDeltas(sseText:string)",
+      "buildRequestBody(prompt:object,options:object)",
+      "searchTopic(topic:string,options:object)",
+      "wikiSearchURL(topic:string)",
+      "parseWikiResponse(json:unknown)"
+    ],
+    "outputs": [
+      "Completion{mode:live|offline-demo,text:string}",
+      "Health{mode:live|offline-demo,credentialsPresent:boolean}",
+      "LookupResult{available:boolean,sources:object[],context?:string}"
+    ],
+    "errors": [
+      "AI_UNAVAILABLE",
+      "AI_TIMEOUT",
+      "AI_INVALID_RESPONSE",
+      "MISSING_CREDENTIALS"
+    ]
+  },
+  "dependencies": [
+    "safety-filter"
+  ],
+  "sourceHash": "d769463c94fe3297a9a2271018de633993fb87ba54d810f1fb22a6bc95809784",
+  "provenance": {
+    "source": "ludus-fresh/server/ai-adapter.mjs (GOLD COPY of server/ai-adapter.mjs) + ludus-fresh/server/search.mjs (GOLD COPY) bridged by ludus-fresh/server.mjs; sourceHash is the adapter file hash"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/stage.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Live mode depends on server-side credentials (never shipped to the client, never printed); without them the adapter returns labelled offline-demo output.",
+    "Lookup is Wikipedia-only v1 (fixed host, safety-gated, cached); wider sources are not claimed. Dollar cost of live calls is not reported by the tooling and is tracked as unknown."
+  ]
+}

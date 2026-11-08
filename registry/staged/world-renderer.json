@@ -1,0 +1,35 @@
+{
+  "id": "world-renderer",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "renderSceneToSVG(scene:SceneSpec)",
+      "objectSVG(obj:ObjectSpec)"
+    ],
+    "outputs": [
+      "SVGString"
+    ],
+    "errors": [
+      "INVALID_SCENE"
+    ]
+  },
+  "dependencies": [
+    "scene-spec",
+    "professor-character"
+  ],
+  "sourceHash": "7d37725829511a4bfe6e973353ed5fbad15d7ab743ec2851bce371a1c7d42293",
+  "provenance": {
+    "source": "src/world-renderer.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "SVG only (no Canvas fallback yet); very large scenes are not virtualised."
+  ]
+}

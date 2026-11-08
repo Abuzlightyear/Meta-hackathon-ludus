@@ -1,0 +1,476 @@
+{
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "safety-filter",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "checkTopic(text:string)",
+          "checkContent(text:string)"
+        ],
+        "outputs": [
+          "SafetyResult{allowed:boolean,reason?:string,safeAlternative?:string,code?:string}"
+        ],
+        "errors": [
+          "EMPTY_INPUT"
+        ]
+      },
+      "contractHash": "8971cac6d45e8b3ddfa8e7c4f5195fe491154370f3a593cba5a25aaa01ac5a7a",
+      "dependencies": [],
+      "sourceHash": "19aa957c4cd36ec2a4cafe4dea3b740b75f3b8a1f3e56e9d9e858fc902580361",
+      "provenance": {
+        "source": "ludus-fresh/src/safety-filter.js (GOLD COPY of src/safety-filter.js, provenance header in file)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/stage.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Heuristic blocklist only; novel unsafe phrasings may need filter updates.",
+        "checkContent currently delegates to the same topic gate; not a general moderation service."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "thinking-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "codeResponse(input:object)",
+          "normalizeConfidence(confidence:unknown)",
+          "elicit(item:object,response:object)",
+          "createTeachingRecord()",
+          "recordExperience(record:object,entry:object)",
+          "markMastered(record:object,skill:string,transferEvidence:string)",
+          "evidenceFor(record:object,skill:string)",
+          "summariseThinking(record:object)",
+          "branchPlan(kernel:object,coreCorrect:number)"
+        ],
+        "outputs": [
+          "CodedResponse{code:slip|misread|prereq-gap|misconception|sound,correct:boolean,confidence:number,evidence:string}",
+          "TeachingRecord{skills:object,entries:object[]}",
+          "DiagnosticResult{kernelId:string,level:string,path:string,correct:number,total:number,asked:number,coded:object[]}"
+        ],
+        "errors": [
+          "INSUFFICIENT_ANSWERS",
+          "INVALID_KERNEL",
+          "WRONG_PHASE"
+        ]
+      },
+      "contractHash": "926bbf513103d6ba03b19fe6fe420b05f5139c31c642b3c7b82bf7b3f320ddb4",
+      "dependencies": [],
+      "sourceHash": "7a1f1b42b2f39ff2301dee0b5fb71277c8b7afe61591a4453fc7244f68e45b54",
+      "provenance": {
+        "source": "ludus-fresh/src/thinking.js (new; branching shape mirrors gold src/diagnosis.js, see file header)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/thinking.test.mjs + tests/adaptive.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Slip coding is deterministic and rule-based over observable evidence; it does not read minds and carries its evidence string.",
+        "Adaptive session asks 5-6 scored/unscored items in tests (within the 5-10 contract); mastery still requires an unaided transfer via markMastered."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "kernel-maths",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "computeFraction(denominator:number,selected:number)",
+          "areaRectangle(length:number,width:number)",
+          "volumeBox(length:number,width:number,depth:number)",
+          "checkMaths(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "FractionState{numerator:number,denominator:number,value:number,decimal:number}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "contractHash": "6deefea5b273726a487485e4609333dbd1de9af6edbffb10262a8912c9683fb4",
+      "dependencies": [],
+      "sourceHash": "911c96084eef983b8b2bdce93a262255011aa8f35582c50da838d173fc8c69ba",
+      "provenance": {
+        "source": "ludus-fresh/src/kernels/maths.js (imports gold fractionState/fractionEquivalence from src/simulations.js)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Fraction inputs clamped to denominator/selected in [1,24]/[0,24]; area/volume are non-negative school-level computations."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "kernel-clouds",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "computeClouds(input:object)",
+          "checkClouds(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "CloudResult{stage:string,cloudType:string,description:string,density:number}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "contractHash": "ebc426fe5779befd6070258ff706079ed6493502b1e1ebec99451c5d3e6e4438",
+      "dependencies": [],
+      "sourceHash": "69e22ec810e9041f0d5d3fa94955d386e94afe69937fa6891c559d183d484722",
+      "provenance": {
+        "source": "ludus-fresh/src/kernels/clouds.js (imports gold cloudTypeFor/waterCycleStage from src/simulations.js)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Temperature clamped to [-30,50]C and humidity to [0,100]%; school-level water-cycle stages only."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "kernel-animals",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "classifyByFeatures(features:object)",
+          "checkAnimals(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "DietGroup:carnivore|herbivore|omnivore",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "contractHash": "2a5b381e51b866400e9276705a494a424de6454195c0bea6996d9dc6eae2b6a3",
+      "dependencies": [],
+      "sourceHash": "36dcebe0a6f1de233d09687a278918dace42ad3ab22dfd382e516a1b4e0897ed",
+      "provenance": {
+        "source": "ludus-fresh/src/kernels/animals.js (imports gold classifyAnimal/compareAnimals from src/simulations.js)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Feature table covers the taught species set; unknown species fall back honestly through the gold classifier."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "kernel-engineering-castle",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "evaluateDesign(input:object)",
+          "checkCastle(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "DesignResult{faceArea:number,volumeBlocks:number,thickness:number,holds:boolean,verdict:HOLDS|FALLS}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "contractHash": "c0d6b7c177f47adc1e1554172eccab7f3516bff7aba32812d2641cc1042b520a",
+      "dependencies": [],
+      "sourceHash": "af78c968573fa92fcb0192e2539769b8fe1343ccdc9d6330dcb51d6f3990d749",
+      "provenance": {
+        "source": "ludus-fresh/src/kernels/engineering-castle.js (imports gold castleState/testCastleDesign/testDesign from src/simulations.js)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Design rule is the taught threshold (thickness>=2 and height>=3), not structural engineering advice."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "kernel-business",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "computeBusiness(input:object)",
+          "withinBudget(input:object)",
+          "evaluateDecisions(scenario:object,options:object[])",
+          "checkBusiness(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "BusinessResult{revenue:number,totalCosts:number,profit:number,breakEvenUnits:number}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "contractHash": "345eefa55af321feaf7d3ba6a41021240bda8d20430aa3e779efe7b315152021",
+      "dependencies": [],
+      "sourceHash": "3c1534b02a2ee9952c5706e77ecebeb3c8fd65644ef6cbad6ef94e3399d81b41",
+      "provenance": {
+        "source": "ludus-fresh/src/kernels/business.js (new kernel, same contract shape as gold-backed kernels)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Single-period school arithmetic (no tax, interest or multi-period effects); negative profit is reported as a loss, break-even is Infinity when margin <= 0 with fixed costs."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "kernel-obscure",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "inquiryPlan(topic:string)",
+          "checkInquiry(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "InquiryPlan{topic:string,simulationSupported:false,steps:string[],supportedParts:string[],unsupportedParts:string[]}",
+          "CheckResult{correct:boolean,scored:false,factual:false,expected:string,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "contractHash": "5447981240917a9493db5f8db5025518c71d284a95308c0257f63b335f2181fa",
+      "dependencies": [],
+      "sourceHash": "c2fff6305781da646ad0c14a9c7f24bebbc864ec1375ce6dd51bf5ae8e934e96",
+      "provenance": {
+        "source": "ludus-fresh/src/kernels/obscure.js (new; simulationSupported:false honesty contract mirrors gold genericTopicScene)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "No bespoke simulation and no verified topic facts (simulationSupported:false, checker scored:false/factual:false); factual teaching needs the labelled Wikipedia lookup in the adapter bridge."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "subject-kernels",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "kernelForTopic(topic:string)",
+          "kernelById(id:string)"
+        ],
+        "outputs": [
+          "Kernel{id:string,title:string,concepts:string[],diagnostic:object[],practice:object[],transfer:object[],checker:function,compute:object}"
+        ],
+        "errors": []
+      },
+      "contractHash": "1e2c37745bc9ba2063b3f7909aa35bbb03e4d35f0715bdb976a9db4ab5f721cc",
+      "dependencies": [
+        "kernel-maths",
+        "kernel-clouds",
+        "kernel-animals",
+        "kernel-engineering-castle",
+        "kernel-business",
+        "kernel-obscure"
+      ],
+      "sourceHash": "b6f51f60df8a749bbd92a49e91ec593116c8f36f6b2295fc765e0fa61a0c62ef",
+      "provenance": {
+        "source": "ludus-fresh/src/kernels/index.js (registry over the six fresh kernels)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/kernels.test.mjs + tests/adaptive.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Topic routing is keyword-based; ambiguous topics fall back to the obscure inquiry kernel rather than guessing a bespoke simulation."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-composer",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "composeScene(spec:object)",
+          "buildWorld(kernelInput:unknown,options:object)",
+          "sceneForTopic(topic:string,options:object)",
+          "genericTopicScene(topic:string,options:object)",
+          "createWorldState(scene:object,options:object)",
+          "applyInteraction(state:object,event:object)",
+          "rebuildScene(state:object,options:object)",
+          "applyCodedResponse(state:object,coded:object)",
+          "renderSceneToSVG(scene:object,options:object)",
+          "validateSceneSpec(scene:unknown)",
+          "validateObjectSpec(obj:unknown,index:number,seenIds:object)",
+          "computeReadout(kernelId:string,params:object)"
+        ],
+        "outputs": [
+          "SceneSpec{id:string,topic:string,title:string,objects:object[],professor:object,viewport:object}",
+          "SceneValidation{valid:boolean,errors:object[]}",
+          "SVGString"
+        ],
+        "errors": [
+          "INVALID_SCENE",
+          "INVALID_OBJECT"
+        ]
+      },
+      "contractHash": "051d72c7cb1d59fdf7b55282d653bdca30bc6436339b8b38dd72608481ada8c2",
+      "dependencies": [
+        "subject-kernels",
+        "kernel-maths",
+        "kernel-clouds",
+        "kernel-animals",
+        "kernel-engineering-castle",
+        "kernel-business",
+        "kernel-obscure",
+        "safety-filter"
+      ],
+      "sourceHash": "36aeba9043662d726c055b5c3befe44bdd74fda350c6886d84a0a5454a141836",
+      "provenance": {
+        "source": "ludus-fresh/src/world.js (one composer; truth computed by fresh kernels, wall renders the computation)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Wall rendering is SVG strings; pixel composition in a real browser remains founder-gated (no browser engine in this environment, none installed).",
+        "The world validator checks structure/actions; the typed scene contract in src/scene-spec.js additionally gates unsafe labels/topics."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "adapter-bridge",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "complete(prompt:object)",
+          "completeStream(prompt:object)",
+          "healthCheck()",
+          "validatePrompt(prompt:unknown)",
+          "validateCompletion(json:unknown)",
+          "extractDeltas(sseText:string)",
+          "buildRequestBody(prompt:object,options:object)",
+          "searchTopic(topic:string,options:object)",
+          "wikiSearchURL(topic:string)",
+          "parseWikiResponse(json:unknown)"
+        ],
+        "outputs": [
+          "Completion{mode:live|offline-demo,text:string}",
+          "Health{mode:live|offline-demo,credentialsPresent:boolean}",
+          "LookupResult{available:boolean,sources:object[],context?:string}"
+        ],
+        "errors": [
+          "AI_UNAVAILABLE",
+          "AI_TIMEOUT",
+          "AI_INVALID_RESPONSE",
+          "MISSING_CREDENTIALS"
+        ]
+      },
+      "contractHash": "43eb3424761b68a74a5cae33a52a6280c3b657e3397254fb7c765f4a61ae2e34",
+      "dependencies": [
+        "safety-filter"
+      ],
+      "sourceHash": "d769463c94fe3297a9a2271018de633993fb87ba54d810f1fb22a6bc95809784",
+      "provenance": {
+        "source": "ludus-fresh/server/ai-adapter.mjs (GOLD COPY of server/ai-adapter.mjs) + ludus-fresh/server/search.mjs (GOLD COPY) bridged by ludus-fresh/server.mjs; sourceHash is the adapter file hash"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/stage.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Live mode depends on server-side credentials (never shipped to the client, never printed); without them the adapter returns labelled offline-demo output.",
+        "Lookup is Wikipedia-only v1 (fixed host, safety-gated, cached); wider sources are not claimed. Dollar cost of live calls is not reported by the tooling and is tracked as unknown."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "theatre-stage",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "tieForKernel(kernelId:string)",
+          "poseForPhase(phase:string)",
+          "latestLine(text:string)"
+        ],
+        "outputs": [
+          "StageView{wallScene:SceneSpec,bubble:string,doctorePose:string,tieAsset:string|null}"
+        ],
+        "errors": [
+          "INVALID_SCENE"
+        ]
+      },
+      "contractHash": "8887889efc67c10224533085795fa241bbadd0402ea91ac5dc3cd8e9047cd7e3",
+      "dependencies": [
+        "thinking-engine",
+        "subject-kernels",
+        "world-composer",
+        "adapter-bridge",
+        "safety-filter"
+      ],
+      "sourceHash": "b909c0820b31765470a1f2077192d1c2b8699c7b0446ca77292359d3022fa7d4",
+      "provenance": {
+        "source": "ludus-fresh/public/stage.js (+ public/index.html, public/styles.css, server.mjs routes)"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/stage.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+          "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Founder browser/sound/pixel gates pending: Doctore cut-out pixels, walk/pose composition, spoken sound and mic quality are unverified by eye/ear (no browser engine available, none installed).",
+        "Browser speech recognition/synthesis vary by browser; Type always carries the full session when voice/mic is unavailable."
+      ],
+      "status": "verified"
+    }
+  ]
+}

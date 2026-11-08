@@ -1,0 +1,308 @@
+{
+  "id": "professor-d",
+  "components": [
+    {
+      "id": "safety-filter"
+    },
+    {
+      "id": "student-state-store",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "getState()",
+          "updateState(patch:Partial<StudentState>)",
+          "resetSession()",
+          "recordTransition(transition:string)"
+        ],
+        "outputs": [
+          "StudentState{sessionId,topic,level,prerequisitesKnown[],prerequisitesMissing[],misconceptions[],mastery,history[]}"
+        ],
+        "errors": [
+          "INVALID_PATCH",
+          "SESSION_NOT_FOUND"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/unit/student-state.test.ts",
+        "tests/integration/learning-state.test.ts"
+      ],
+      "operations": [
+        "getState",
+        "updateState",
+        "resetSession",
+        "recordTransition"
+      ]
+    },
+    {
+      "id": "ai-adapter-meta",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "complete(prompt:ValidatedPrompt)",
+          "healthCheck()"
+        ],
+        "outputs": [
+          "Completion{mode:live|offline-demo,text:string}",
+          "Health{mode:live|offline-demo}"
+        ],
+        "errors": [
+          "AI_UNAVAILABLE",
+          "AI_TIMEOUT",
+          "AI_INVALID_RESPONSE",
+          "MISSING_CREDENTIALS"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/contract/ai-adapter.test.ts",
+        "tests/integration/api-error.test.ts"
+      ],
+      "operations": [
+        "complete",
+        "healthCheck"
+      ]
+    },
+    {
+      "id": "diagnosis-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "generateDiagnostic(topic:string)",
+          "inferDiagnosis(topic:string,answers:Answer[])"
+        ],
+        "outputs": [
+          "Diagnosis{level,prerequisitesKnown[],prerequisitesMissing[],misconceptions[],confidence}"
+        ],
+        "errors": [
+          "INSUFFICIENT_ANSWERS",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "ai-adapter-meta",
+        "student-state-store",
+        "safety-filter"
+      ],
+      "tests": [
+        "tests/unit/diagnosis.test.ts",
+        "tests/contract/diagnosis.contract.test.ts"
+      ],
+      "operations": [
+        "generateDiagnostic",
+        "inferDiagnosis"
+      ]
+    },
+    {
+      "id": "lesson-planner",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "buildPlan(topic:string,diagnosis:Diagnosis)",
+          "revisePlan(plan:Plan,diagnosis:Diagnosis)"
+        ],
+        "outputs": [
+          "Plan{steps:[{id,title,objective,dependsOn[],toolHint}]}"
+        ],
+        "errors": [
+          "NO_PREREQUISITE_PATH",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "diagnosis-engine",
+        "student-state-store"
+      ],
+      "tests": [
+        "tests/unit/lesson-planner.test.ts",
+        "tests/contract/lesson-planner.contract.test.ts"
+      ],
+      "operations": [
+        "buildPlan",
+        "revisePlan"
+      ]
+    },
+    {
+      "id": "teaching-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "explain(step:PlanStep,state:StudentState)",
+          "visualSteps(step:PlanStep)",
+          "workedExample(step:PlanStep)"
+        ],
+        "outputs": [
+          "LessonContent{markdown,visualSteps?,example?,simulationSupported:boolean}"
+        ],
+        "errors": [
+          "UNSUPPORTED_SIMULATION",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "ai-adapter-meta",
+        "lesson-planner",
+        "student-state-store"
+      ],
+      "tests": [
+        "tests/unit/teaching-engine.test.ts",
+        "tests/contract/teaching-engine.contract.test.ts"
+      ],
+      "operations": [
+        "explain",
+        "visualSteps",
+        "workedExample"
+      ]
+    },
+    {
+      "id": "tool-selector",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "selectTool(step:PlanStep,state:StudentState)",
+          "listTools()"
+        ],
+        "outputs": [
+          "ToolChoice{toolId:worked-example|visual-steps|knowledge-check|code-playground-readonly|flashcards|socratic-hints,rationale:string}"
+        ],
+        "errors": [
+          "NO_SUITABLE_TOOL"
+        ]
+      },
+      "dependencies": [
+        "student-state-store",
+        "lesson-planner"
+      ],
+      "tests": [
+        "tests/unit/tool-selector.test.ts",
+        "tests/integration/tool-selection.test.ts"
+      ],
+      "operations": [
+        "selectTool",
+        "listTools"
+      ]
+    },
+    {
+      "id": "assessment-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "generateCheck(step:PlanStep,state:StudentState)",
+          "evaluateAnswer(itemId:string,answer:string,state:StudentState)",
+          "verifyMastery(state:StudentState)"
+        ],
+        "outputs": [
+          "Evaluation{correct:boolean,feedback:string,misconceptionDetected?:string,masteryDelta:number}",
+          "Mastery{mastered:boolean,score:number,remainingMisconceptions[]}"
+        ],
+        "errors": [
+          "UNKNOWN_ITEM",
+          "AI_UNAVAILABLE"
+        ]
+      },
+      "dependencies": [
+        "ai-adapter-meta",
+        "student-state-store",
+        "teaching-engine"
+      ],
+      "tests": [
+        "tests/unit/assessment.test.ts",
+        "tests/integration/learning-state.test.ts"
+      ],
+      "operations": [
+        "generateCheck",
+        "evaluateAnswer",
+        "verifyMastery"
+      ]
+    },
+    {
+      "id": "aegis-blueprint-validator",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "validateBlueprint(blueprint:unknown)",
+          "checkGraph(components:Component[])"
+        ],
+        "outputs": [
+          "ValidationReport{valid:boolean,errors:[{path,rule,message}]}"
+        ],
+        "errors": [
+          "INVALID_BLUEPRINT"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/unit/aegis-validator.test.ts",
+        "tests/negative/blueprint.negative.test.ts"
+      ],
+      "operations": [
+        "validateBlueprint",
+        "checkGraph"
+      ]
+    },
+    {
+      "id": "aegis-component-registry",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "register(component:Component)",
+          "resolve(id:string,version:string,contractHash:string)",
+          "listVerified()"
+        ],
+        "outputs": [
+          "RegistryEntry{id,version,contractHash,status:candidate|verified|deprecated,reused:boolean}"
+        ],
+        "errors": [
+          "VERSION_MISMATCH",
+          "CONTRACT_MISMATCH",
+          "NOT_FOUND"
+        ]
+      },
+      "dependencies": [
+        "aegis-blueprint-validator"
+      ],
+      "tests": [
+        "tests/unit/aegis-registry.test.ts",
+        "tests/negative/registry.negative.test.ts"
+      ],
+      "operations": [
+        "register",
+        "resolve",
+        "listVerified"
+      ]
+    },
+    {
+      "id": "ui-shell",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "renderFlow(state:StudentState)",
+          "renderAegisView(report:GateReport)"
+        ],
+        "outputs": [
+          "RenderedView{flow:AegisView}"
+        ],
+        "errors": [
+          "MISSING_GATE_REPORT"
+        ]
+      },
+      "dependencies": [
+        "student-state-store",
+        "diagnosis-engine",
+        "lesson-planner",
+        "teaching-engine",
+        "tool-selector",
+        "assessment-engine",
+        "safety-filter"
+      ],
+      "tests": [
+        "tests/e2e/professor-d.flow.spec.ts",
+        "tests/e2e/aegis-view.spec.ts"
+      ],
+      "operations": [
+        "renderFlow",
+        "renderAegisView"
+      ]
+    }
+  ]
+}

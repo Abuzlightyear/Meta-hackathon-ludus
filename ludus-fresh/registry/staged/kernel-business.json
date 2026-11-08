@@ -1,0 +1,33 @@
+{
+  "id": "kernel-business",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "computeBusiness(input:object)",
+      "withinBudget(input:object)",
+      "evaluateDecisions(scenario:object,options:object[])",
+      "checkBusiness(item:object,answer:unknown)"
+    ],
+    "outputs": [
+      "BusinessResult{revenue:number,totalCosts:number,profit:number,breakEvenUnits:number}",
+      "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+    ],
+    "errors": []
+  },
+  "dependencies": [],
+  "sourceHash": "3c1534b02a2ee9952c5706e77ecebeb3c8fd65644ef6cbad6ef94e3399d81b41",
+  "provenance": {
+    "source": "ludus-fresh/src/kernels/business.js (new kernel, same contract shape as gold-backed kernels)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Single-period school arithmetic (no tax, interest or multi-period effects); negative profit is reported as a loss, break-even is Infinity when margin <= 0 with fixed costs."
+  ]
+}

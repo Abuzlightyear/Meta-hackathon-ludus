@@ -1,0 +1,403 @@
+{
+  "id": "ludus-fresh",
+  "version": "1.0.0",
+  "metadata": {
+    "name": "LUDUS FRESH",
+    "description": "One integrated teaching intelligence: thinking engine, subject kernels, one world composer, theatre stage and server adapter bridge. Zero-dependency Node; AI output rendered as text only, never evaluated; secrets server-only.",
+    "aegisVersion": "2.0.0",
+    "target": "zero-dependency-node-esm-theatre-stage",
+    "createdFor": "Meta-hackathon-ludus ludus-fresh build (existing app preserved as fallback)"
+  },
+  "components": [
+    {
+      "id": "safety-filter",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "checkTopic(text:string)",
+          "checkContent(text:string)"
+        ],
+        "outputs": [
+          "SafetyResult{allowed:boolean,reason?:string,safeAlternative?:string,code?:string}"
+        ],
+        "errors": [
+          "EMPTY_INPUT"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/stage.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "checkTopic",
+        "checkContent"
+      ]
+    },
+    {
+      "id": "thinking-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "codeResponse(input:object)",
+          "normalizeConfidence(confidence:unknown)",
+          "elicit(item:object,response:object)",
+          "createTeachingRecord()",
+          "recordExperience(record:object,entry:object)",
+          "markMastered(record:object,skill:string,transferEvidence:string)",
+          "evidenceFor(record:object,skill:string)",
+          "summariseThinking(record:object)",
+          "branchPlan(kernel:object,coreCorrect:number)"
+        ],
+        "outputs": [
+          "CodedResponse{code:slip|misread|prereq-gap|misconception|sound,correct:boolean,confidence:number,evidence:string}",
+          "TeachingRecord{skills:object,entries:object[]}",
+          "DiagnosticResult{kernelId:string,level:string,path:string,correct:number,total:number,asked:number,coded:object[]}"
+        ],
+        "errors": [
+          "INSUFFICIENT_ANSWERS",
+          "INVALID_KERNEL",
+          "WRONG_PHASE"
+        ]
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/thinking.test.mjs",
+        "tests/adaptive.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "codeResponse",
+        "normalizeConfidence",
+        "elicit",
+        "createTeachingRecord",
+        "recordExperience",
+        "markMastered",
+        "evidenceFor",
+        "summariseThinking",
+        "branchPlan"
+      ]
+    },
+    {
+      "id": "kernel-maths",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "computeFraction(denominator:number,selected:number)",
+          "areaRectangle(length:number,width:number)",
+          "volumeBox(length:number,width:number,depth:number)",
+          "checkMaths(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "FractionState{numerator:number,denominator:number,value:number,decimal:number}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/kernels.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "computeFraction",
+        "areaRectangle",
+        "volumeBox",
+        "checkMaths"
+      ]
+    },
+    {
+      "id": "kernel-clouds",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "computeClouds(input:object)",
+          "checkClouds(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "CloudResult{stage:string,cloudType:string,description:string,density:number}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/kernels.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "computeClouds",
+        "checkClouds"
+      ]
+    },
+    {
+      "id": "kernel-animals",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "classifyByFeatures(features:object)",
+          "checkAnimals(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "DietGroup:carnivore|herbivore|omnivore",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/kernels.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "classifyByFeatures",
+        "checkAnimals"
+      ]
+    },
+    {
+      "id": "kernel-engineering-castle",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "evaluateDesign(input:object)",
+          "checkCastle(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "DesignResult{faceArea:number,volumeBlocks:number,thickness:number,holds:boolean,verdict:HOLDS|FALLS}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/kernels.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "evaluateDesign",
+        "checkCastle"
+      ]
+    },
+    {
+      "id": "kernel-business",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "computeBusiness(input:object)",
+          "withinBudget(input:object)",
+          "evaluateDecisions(scenario:object,options:object[])",
+          "checkBusiness(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "BusinessResult{revenue:number,totalCosts:number,profit:number,breakEvenUnits:number}",
+          "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/kernels.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "computeBusiness",
+        "withinBudget",
+        "evaluateDecisions",
+        "checkBusiness"
+      ]
+    },
+    {
+      "id": "kernel-obscure",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "inquiryPlan(topic:string)",
+          "checkInquiry(item:object,answer:unknown)"
+        ],
+        "outputs": [
+          "InquiryPlan{topic:string,simulationSupported:false,steps:string[],supportedParts:string[],unsupportedParts:string[]}",
+          "CheckResult{correct:boolean,scored:false,factual:false,expected:string,given:unknown,feedback:string}"
+        ],
+        "errors": []
+      },
+      "dependencies": [],
+      "tests": [
+        "tests/kernels.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "inquiryPlan",
+        "checkInquiry"
+      ]
+    },
+    {
+      "id": "subject-kernels",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "kernelForTopic(topic:string)",
+          "kernelById(id:string)"
+        ],
+        "outputs": [
+          "Kernel{id:string,title:string,concepts:string[],diagnostic:object[],practice:object[],transfer:object[],checker:function,compute:object}"
+        ],
+        "errors": []
+      },
+      "dependencies": [
+        "kernel-maths",
+        "kernel-clouds",
+        "kernel-animals",
+        "kernel-engineering-castle",
+        "kernel-business",
+        "kernel-obscure"
+      ],
+      "tests": [
+        "tests/kernels.test.mjs",
+        "tests/adaptive.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "kernelForTopic",
+        "kernelById"
+      ]
+    },
+    {
+      "id": "world-composer",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "composeScene(spec:object)",
+          "buildWorld(kernelInput:unknown,options:object)",
+          "sceneForTopic(topic:string,options:object)",
+          "genericTopicScene(topic:string,options:object)",
+          "createWorldState(scene:object,options:object)",
+          "applyInteraction(state:object,event:object)",
+          "rebuildScene(state:object,options:object)",
+          "applyCodedResponse(state:object,coded:object)",
+          "renderSceneToSVG(scene:object,options:object)",
+          "validateSceneSpec(scene:unknown)",
+          "validateObjectSpec(obj:unknown,index:number,seenIds:object)",
+          "computeReadout(kernelId:string,params:object)"
+        ],
+        "outputs": [
+          "SceneSpec{id:string,topic:string,title:string,objects:object[],professor:object,viewport:object}",
+          "SceneValidation{valid:boolean,errors:object[]}",
+          "SVGString"
+        ],
+        "errors": [
+          "INVALID_SCENE",
+          "INVALID_OBJECT"
+        ]
+      },
+      "dependencies": [
+        "subject-kernels@9.9.9",
+        "kernel-maths",
+        "kernel-clouds",
+        "kernel-animals",
+        "kernel-engineering-castle",
+        "kernel-business",
+        "kernel-obscure",
+        "safety-filter"
+      ],
+      "tests": [
+        "tests/world.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "composeScene",
+        "buildWorld",
+        "sceneForTopic",
+        "genericTopicScene",
+        "createWorldState",
+        "applyInteraction",
+        "rebuildScene",
+        "applyCodedResponse",
+        "renderSceneToSVG",
+        "validateSceneSpec",
+        "validateObjectSpec",
+        "computeReadout"
+      ]
+    },
+    {
+      "id": "adapter-bridge",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "complete(prompt:object)",
+          "completeStream(prompt:object)",
+          "healthCheck()",
+          "validatePrompt(prompt:unknown)",
+          "validateCompletion(json:unknown)",
+          "extractDeltas(sseText:string)",
+          "buildRequestBody(prompt:object,options:object)",
+          "searchTopic(topic:string,options:object)",
+          "wikiSearchURL(topic:string)",
+          "parseWikiResponse(json:unknown)"
+        ],
+        "outputs": [
+          "Completion{mode:live|offline-demo,text:string}",
+          "Health{mode:live|offline-demo,credentialsPresent:boolean}",
+          "LookupResult{available:boolean,sources:object[],context?:string}"
+        ],
+        "errors": [
+          "AI_UNAVAILABLE",
+          "AI_TIMEOUT",
+          "AI_INVALID_RESPONSE",
+          "MISSING_CREDENTIALS"
+        ]
+      },
+      "dependencies": [
+        "safety-filter"
+      ],
+      "tests": [
+        "tests/stage.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "complete",
+        "completeStream",
+        "healthCheck",
+        "validatePrompt",
+        "validateCompletion",
+        "extractDeltas",
+        "buildRequestBody",
+        "searchTopic",
+        "wikiSearchURL",
+        "parseWikiResponse"
+      ]
+    },
+    {
+      "id": "theatre-stage",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "tieForKernel(kernelId:string)",
+          "poseForPhase(phase:string)",
+          "latestLine(text:string)"
+        ],
+        "outputs": [
+          "StageView{wallScene:SceneSpec,bubble:string,doctorePose:string,tieAsset:string|null}"
+        ],
+        "errors": [
+          "INVALID_SCENE"
+        ]
+      },
+      "dependencies": [
+        "thinking-engine",
+        "subject-kernels",
+        "world-composer",
+        "adapter-bridge",
+        "safety-filter"
+      ],
+      "tests": [
+        "tests/stage.test.mjs",
+        "tests/aegis-fresh.test.mjs"
+      ],
+      "operations": [
+        "tieForKernel",
+        "poseForPhase",
+        "latestLine"
+      ]
+    }
+  ]
+}

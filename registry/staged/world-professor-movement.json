@@ -1,0 +1,24 @@
+{
+  "id": "world-professor-movement",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": ["professorStateForEvent(event:string)", "transitionProfessor(prof:Professor,eventOrState:string)", "walkProfessorTo(prof:Professor,x:number,y:number)", "professorSVGForState(prof:Professor,opts:object)"],
+    "outputs": ["ProfessorState{state:string}", "Professor{x,y,gesture,facing}", "SVGString"],
+    "errors": ["UNSUPPORTED_GESTURE"]
+  },
+  "dependencies": ["professor-character", "scene-spec"],
+  "sourceHash": "d846e9b121d0f1552ae0fa190a75718d5077f8d2690d49d063a191df5a3f3a9c",
+  "provenance": { "source": "src/world/professor.js" },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (world/professor: 8 states driven by lesson events, consistent SVG, reduced-motion CSS)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Single consistent Scholar-Commander asset; walk is a pose + CSS animation, not skeletal animation.",
+    "All motion is lesson-event driven; prefers-reduced-motion freezes every state to a static pose."
+  ]
+}

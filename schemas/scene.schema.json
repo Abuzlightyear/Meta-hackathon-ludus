@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis-v2.local/schemas/scene.schema.json",
+  "title": "Dynamic Learning World — SceneSpec",
+  "description": "Typed scene description for the reusable 2D world engine. Mirrors src/scene-spec.js (validateSceneSpec / validateObjectSpec). JSON Schema expresses structure, enums and numeric bounds; semantic rules JSON Schema cannot express (duplicate object ids, safety-filter checks on topic/label/prompt, cross-object reference existence) are enforced by src/scene-spec.js and src/scene-director.js and return structured {path, rule, message} errors.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "topic", "title", "objects"],
+  "properties": {
+    "id": { "$ref": "#/$defs/kebabId" },
+    "topic": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "objects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/objectSpec" }
+    },
+    "professor": { "$ref": "#/$defs/professor" },
+    "viewport": { "$ref": "#/$defs/viewport" },
+    "interactions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/interaction" }
+    }
+  },
+  "$defs": {
+    "kebabId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "minLength": 1
+    },
+    "objectType": {
+      "type": "string",
+      "enum": [
+        "shape", "label", "line", "instrument",
+        "fraction-pizza", "fraction-bar", "number-line",
+        "cloud", "sun", "sea", "plant", "animal", "habitat", "tree",
+        "column", "arch", "desk", "map", "block", "beam", "wall",
+        "timeline", "sequence", "diagram-node",
+        "imported-asset", "group"
+      ]
+    },
+    "objectAction": {
+      "type": "string",
+      "enum": [
+        "select", "select-slice", "divide", "drag", "place", "classify",
+        "observe", "measure", "test-design", "reveal", "none"
+      ]
+    },
+    "professorGesture": {
+      "type": "string",
+      "enum": ["idle", "walk", "turn", "point", "present", "think", "listen", "encourage", "demonstrate"]
+    },
+    "appearance": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["fill"],
+      "properties": {
+        "fill": { "type": "string", "minLength": 1 },
+        "stroke": { "type": "string" },
+        "label": { "type": "string" }
+      }
+    },
+    "objectSpec": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "type", "x", "y", "appearance", "label", "actions", "interactive", "purpose"],
+      "properties": {
+        "id": { "$ref": "#/$defs/kebabId" },
+        "type": { "$ref": "#/$defs/objectType" },
+        "x": { "type": "number", "minimum": -200, "maximum": 1200 },
+        "y": { "type": "number", "minimum": -200, "maximum": 900 },
+        "scale": { "type": "number", "exclusiveMinimum": 0, "maximum": 10, "default": 1 },
+        "rotation": { "type": "number", "default": 0 },
+        "appearance": { "$ref": "#/$defs/appearance" },
+        "label": { "type": "string", "minLength": 1 },
+        "actions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/objectAction" }
+        },
+        "interactive": { "type": "boolean" },
+        "purpose": { "type": "string", "minLength": 1 },
+        "props": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "professor": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "gesture": { "$ref": "#/$defs/professorGesture" },
+        "facing": { "type": "integer", "enum": [-1, 1] }
+      }
+    },
+    "viewport": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["w", "h"],
+      "properties": {
+        "w": { "type": "number", "exclusiveMinimum": 0 },
+        "h": { "type": "number", "exclusiveMinimum": 0 },
+        "zoom": { "type": "number", "exclusiveMinimum": 0, "maximum": 8, "default": 1 }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "prompt": { "type": "string" },
+        "objectId": { "$ref": "#/$defs/kebabId" }
+      }
+    }
+  }
+}

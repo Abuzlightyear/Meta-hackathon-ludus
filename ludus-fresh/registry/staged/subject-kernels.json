@@ -1,0 +1,37 @@
+{
+  "id": "subject-kernels",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "kernelForTopic(topic:string)",
+      "kernelById(id:string)"
+    ],
+    "outputs": [
+      "Kernel{id:string,title:string,concepts:string[],diagnostic:object[],practice:object[],transfer:object[],checker:function,compute:object}"
+    ],
+    "errors": []
+  },
+  "dependencies": [
+    "kernel-maths",
+    "kernel-clouds",
+    "kernel-animals",
+    "kernel-engineering-castle",
+    "kernel-business",
+    "kernel-obscure"
+  ],
+  "sourceHash": "b6f51f60df8a749bbd92a49e91ec593116c8f36f6b2295fc765e0fa61a0c62ef",
+  "provenance": {
+    "source": "ludus-fresh/src/kernels/index.js (registry over the six fresh kernels)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/kernels.test.mjs + tests/adaptive.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Topic routing is keyword-based; ambiguous topics fall back to the obscure inquiry kernel rather than guessing a bespoke simulation."
+  ]
+}

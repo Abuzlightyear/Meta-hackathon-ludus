@@ -1,0 +1,33 @@
+{
+  "id": "kernel-maths",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "computeFraction(denominator:number,selected:number)",
+      "areaRectangle(length:number,width:number)",
+      "volumeBox(length:number,width:number,depth:number)",
+      "checkMaths(item:object,answer:unknown)"
+    ],
+    "outputs": [
+      "FractionState{numerator:number,denominator:number,value:number,decimal:number}",
+      "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+    ],
+    "errors": []
+  },
+  "dependencies": [],
+  "sourceHash": "911c96084eef983b8b2bdce93a262255011aa8f35582c50da838d173fc8c69ba",
+  "provenance": {
+    "source": "ludus-fresh/src/kernels/maths.js (imports gold fractionState/fractionEquivalence from src/simulations.js)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Fraction inputs clamped to denominator/selected in [1,24]/[0,24]; area/volume are non-negative school-level computations."
+  ]
+}

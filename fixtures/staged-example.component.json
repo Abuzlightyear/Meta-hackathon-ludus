@@ -1,0 +1,31 @@
+{
+  "id": "example-widget",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "render(input:string)"
+    ],
+    "outputs": [
+      "WidgetView{html:string}"
+    ],
+    "errors": [
+      "INVALID_INPUT"
+    ]
+  },
+  "dependencies": [],
+  "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "provenance": {
+    "source": "fixtures/staged-example.component.json (synthetic example, not a real component)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/unit/example-widget.test.ts",
+      "command": "node --test (recorded example)",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Synthetic fixture only; proves the acceptance gate, not a shipped component."
+  ]
+}

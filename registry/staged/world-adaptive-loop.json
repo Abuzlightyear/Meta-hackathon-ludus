@@ -1,0 +1,24 @@
+{
+  "id": "world-adaptive-loop",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": ["adaptAfterWrongAnswer(ctx:object)", "checkMastery(topic:string,answers:array,remainingMisconceptions:array)"],
+    "outputs": ["AdaptResult{decision:string,strategy:string,scene:SceneSpec,newInteraction:object,verifyChallenge:array}", "MasteryResult{mastered:boolean,score:number,threshold:number}"],
+    "errors": ["INVALID_SCENE"]
+  },
+  "dependencies": ["world-director", "world-state-sync", "assessment-engine"],
+  "sourceHash": "3e38418db8e2d2cd98a04f06d1c8cc1c3b140adb027e42241cf4b3424b82488f",
+  "provenance": { "source": "src/world/adaptive.js" },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (demo fractions/clouds/animals/volcano adapt after wrong answer + checkMastery withheld below 0.8)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Misconception-driven only; learning-style labels are rejected, never inferred or stored.",
+    "Mastery needs >=0.8 on a distinct verify challenge with no critical misconception remaining; it is withheld otherwise."
+  ]
+}

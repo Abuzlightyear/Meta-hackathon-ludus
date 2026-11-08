@@ -1,0 +1,24 @@
+{
+  "id": "world-rendering",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": ["renderSVG(scene:SceneSpec,opts:object)", "objectSVG(obj:ObjectSpec)", "drawSceneToCanvas(ctx:object,scene:SceneSpec,opts:object)", "focusableObjects(scene:SceneSpec)", "nextFocusId(scene:SceneSpec,currentId:string,dir:number)", "prefersReducedMotion(matchMediaFn:function)"],
+    "outputs": ["SVGString", "CanvasResult{ok:boolean,drawn?:number,error?:object}", "FocusableList{objects:ObjectSpec[]}"],
+    "errors": ["INVALID_SCENE", "NO_CONTEXT"]
+  },
+  "dependencies": ["scene-spec", "world-renderer"],
+  "sourceHash": "6ffb4874d8a9f6750ebda540d595392426738acf6ad8e0c05ac3023ba31911df",
+  "provenance": { "source": "src/world/render-svg.js" },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (world/: render-svg exact fractions, canvas fallback, keyboard focus + reduced-motion)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "SVG is the exact-geometry primary renderer; Canvas is a lightweight deterministic fallback (fractions/labels/basic shapes), not full parity with every SVG branch.",
+    "Very large scenes are not virtualised; the brief is a few dozen nodes per scene."
+  ]
+}

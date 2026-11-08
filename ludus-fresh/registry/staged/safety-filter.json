@@ -1,0 +1,33 @@
+{
+  "id": "safety-filter",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "checkTopic(text:string)",
+      "checkContent(text:string)"
+    ],
+    "outputs": [
+      "SafetyResult{allowed:boolean,reason?:string,safeAlternative?:string,code?:string}"
+    ],
+    "errors": [
+      "EMPTY_INPUT"
+    ]
+  },
+  "dependencies": [],
+  "sourceHash": "19aa957c4cd36ec2a4cafe4dea3b740b75f3b8a1f3e56e9d9e858fc902580361",
+  "provenance": {
+    "source": "ludus-fresh/src/safety-filter.js (GOLD COPY of src/safety-filter.js, provenance header in file)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/stage.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Heuristic blocklist only; novel unsafe phrasings may need filter updates.",
+    "checkContent currently delegates to the same topic gate; not a general moderation service."
+  ]
+}

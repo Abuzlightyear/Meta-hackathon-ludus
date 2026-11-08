@@ -1,0 +1,31 @@
+{
+  "id": "kernel-animals",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "classifyByFeatures(features:object)",
+      "checkAnimals(item:object,answer:unknown)"
+    ],
+    "outputs": [
+      "DietGroup:carnivore|herbivore|omnivore",
+      "CheckResult{correct:boolean,expected:unknown,given:unknown,feedback:string}"
+    ],
+    "errors": []
+  },
+  "dependencies": [],
+  "sourceHash": "36dcebe0a6f1de233d09687a278918dace42ad3ab22dfd382e516a1b4e0897ed",
+  "provenance": {
+    "source": "ludus-fresh/src/kernels/animals.js (imports gold classifyAnimal/compareAnimals from src/simulations.js)"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/kernels.test.mjs + tests/aegis-fresh.test.mjs (full fresh suite: npm test in ludus-fresh)",
+      "command": "npm test (node --test tests/*.test.mjs) in /workspaces/Meta-hackathon-ludus/ludus-fresh",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Feature table covers the taught species set; unknown species fall back honestly through the gold classifier."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "safety-filter",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "checkTopic(text:string)",
+      "checkContent(text:string)"
+    ],
+    "outputs": [
+      "SafetyResult{allowed:boolean,reason?:string,safeAlternative?:string}"
+    ],
+    "errors": [
+      "EMPTY_INPUT"
+    ]
+  },
+  "dependencies": [],
+  "sourceHash": "b9373e8db6b75999130e4b2d63c3e250d9ed773930f80e633976a323a987fe0a",
+  "provenance": {
+    "source": "src/safety-filter.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/app.test.mjs (safety: empty rejected, unsafe refused with alternative, safe allowed; plus full suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Heuristic blocklist only; novel unsafe phrasings may need filter updates (docs/KNOWN_LIMITATIONS.md #6).",
+    "Session-scoped demo component; verified for the blueprint contract above, not a general content-moderation service."
+  ]
+}

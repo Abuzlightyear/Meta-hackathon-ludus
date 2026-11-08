@@ -1,0 +1,38 @@
+{
+  "id": "world-objects",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "createShape(spec:object)",
+      "createFractionPizza(spec:object)",
+      "createCloud(spec:object)",
+      "createAnimal(spec:object)",
+      "createBlock(spec:object)",
+      "createTimeline(spec:object)"
+    ],
+    "outputs": [
+      "ObjectSpec{id,type,x,y,scale,appearance,label,actions,interactive,purpose}"
+    ],
+    "errors": [
+      "INVALID_OBJECT"
+    ]
+  },
+  "dependencies": [
+    "scene-spec"
+  ],
+  "sourceHash": "59e19ed7ccfb81dad19bd173f36894e75ea6935df84bb49250b9f966228519cd",
+  "provenance": {
+    "source": "src/world-objects.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Procedural representations are simplified; subject accuracy lives in simulations/assessment, not the drawing."
+  ]
+}

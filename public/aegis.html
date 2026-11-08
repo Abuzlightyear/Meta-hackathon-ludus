@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Built with AEGIS V2 — Professor D</title>
+<meta name="description" content="Real AEGIS V2 gate results, verified components, test reports, and invalid-blueprint rejection for Professor D.">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true">D</span><div><strong>Professor D</strong><small>Adaptive learning, one topic at a time</small></div></div>
+  <nav aria-label="Views"><a class="navbtn" href="/">Learn</a><span class="navbtn" aria-current="page">Built with AEGIS V2</span></nav>
+</header>
+<main id="main">
+  <h1>Built with AEGIS V2</h1>
+  <p class="muted">Technical view. Everything below is loaded live from the real files — <code>registry/gate-report.json</code>, <code>registry/components.json</code>, <code>registry/gate-events.jsonl</code>, <code>registry/test-report.json</code> — plus one intentionally invalid blueprint rejected on request by the executable validator. Anything that has not run is shown as <em>not-run</em>, never as passed. No numbers are typed into this page.</p>
+  <div id="aegis-body" aria-live="polite"><p>Loading real AEGIS records…</p></div>
+</main>
+<footer><small>Reproduce: <code>node tools/aegis/validate.mjs blueprints/professor-d.blueprint.json</code> · <code>node tools/aegis/gates.mjs run --blueprint blueprints/professor-d.blueprint.json</code> · <code>npm run test:report</code></small></footer>
+<script type="module" src="/aegis.js"></script>
+</body>
+</html>

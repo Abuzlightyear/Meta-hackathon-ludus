@@ -1,0 +1,31 @@
+{
+  "id": "Bad Scene!",
+  "topic": "castles",
+  "title": "",
+  "objects": [
+    {
+      "id": "wall 1",
+      "type": "laser-turret",
+      "x": 99999,
+      "y": -99999,
+      "appearance": {},
+      "label": "",
+      "actions": ["select"],
+      "interactive": "yes",
+      "purpose": ""
+    },
+    {
+      "id": "wall 1",
+      "type": "wall",
+      "x": 100,
+      "y": 100,
+      "appearance": { "fill": "#8c6a2f" },
+      "label": "Wall",
+      "actions": ["select"],
+      "interactive": true,
+      "purpose": "Duplicate id on purpose."
+    }
+  ],
+  "professor": { "x": "left", "y": 100, "gesture": "present" },
+  "viewport": { "w": -5, "h": 0 }
+}

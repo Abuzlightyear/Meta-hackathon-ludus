@@ -1,0 +1,27 @@
+{
+  "id": "professor-d",
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "world-director",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["validateDirectorCommand(cmd:unknown,scene:SceneSpec)", "applyDirectorCommand(scene:SceneSpec,cmd:Command)"],
+        "outputs": ["CommandValidation{valid:boolean,errors:[{path,rule,message}]}", "DirectorResult{ok:boolean,scene?:SceneSpec,applied?:string[],error?:object}"],
+        "errors": ["INVALID_COMMAND", "INVALID_SCENE"]
+      },
+      "dependencies": [],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["validateDirectorCommand", "eval"]
+    }
+  ],
+  "metadata": {
+    "name": "Professor D",
+    "description": "Negative fixture: world-director lists a blocked unsafe operation",
+    "aegisVersion": "2.0.0",
+    "target": "vite-typescript-react-mobile-web",
+    "createdFor": "Meta-hackathon-ludus",
+    "aiMode": "server-side-meta-ai-with-labeled-offline-demo-fallback",
+    "firstScreen": "What would you like to learn today?"
+  }
+}

@@ -1,0 +1,649 @@
+{
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "safety-filter",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "checkTopic(text:string)",
+          "checkContent(text:string)"
+        ],
+        "outputs": [
+          "SafetyResult{allowed:boolean,reason?:string,safeAlternative?:string}"
+        ],
+        "errors": [
+          "EMPTY_INPUT"
+        ]
+      },
+      "contractHash": "ab43a9735ba1eaaf31c34c43ad01c09eeed91589cc8cab5dead46615a2a8cb86",
+      "dependencies": [],
+      "sourceHash": "b9373e8db6b75999130e4b2d63c3e250d9ed773930f80e633976a323a987fe0a",
+      "provenance": {
+        "source": "src/safety-filter.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/app.test.mjs (safety: empty rejected, unsafe refused with alternative, safe allowed; plus full suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Heuristic blocklist only; novel unsafe phrasings may need filter updates (docs/KNOWN_LIMITATIONS.md #6).",
+        "Session-scoped demo component; verified for the blueprint contract above, not a general content-moderation service."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "scene-spec",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "validateSceneSpec(scene:unknown)",
+          "validateObjectSpec(obj:unknown)",
+          "createSceneSpec(spec:object)"
+        ],
+        "outputs": [
+          "SceneValidation{valid:boolean,errors:[{path,rule,message}]}",
+          "SceneSpec{id,topic,title,objects[],professor,viewport}"
+        ],
+        "errors": [
+          "INVALID_SCENE",
+          "INVALID_OBJECT"
+        ]
+      },
+      "contractHash": "c0b5fd1c6913513502494717fa3b0dd32ef6b83d5c155f32caa62a82f26ae4e6",
+      "dependencies": [
+        "safety-filter"
+      ],
+      "sourceHash": "177c0d5084ea2cbc369cfbc67a49db65e1a2fa315f62013e91328c9ef9fe7ba0",
+      "provenance": {
+        "source": "src/scene-spec.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Validates structure and safety of labels only; does not judge teaching quality."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-objects",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "createShape(spec:object)",
+          "createFractionPizza(spec:object)",
+          "createCloud(spec:object)",
+          "createAnimal(spec:object)",
+          "createBlock(spec:object)",
+          "createTimeline(spec:object)"
+        ],
+        "outputs": [
+          "ObjectSpec{id,type,x,y,scale,appearance,label,actions,interactive,purpose}"
+        ],
+        "errors": [
+          "INVALID_OBJECT"
+        ]
+      },
+      "contractHash": "59fae49ee8d1e557a9827d56ad00f3c6464b9519df28782dbfa41c8bf47d7e10",
+      "dependencies": [
+        "scene-spec"
+      ],
+      "sourceHash": "59e19ed7ccfb81dad19bd173f36894e75ea6935df84bb49250b9f966228519cd",
+      "provenance": {
+        "source": "src/world-objects.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Procedural representations are simplified; subject accuracy lives in simulations/assessment, not the drawing."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "professor-character",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "createProfessor(spec:object)",
+          "moveProfessor(prof:Professor,delta:object)",
+          "setProfessorGesture(prof:Professor,gesture:string)",
+          "professorSVG(prof:Professor)"
+        ],
+        "outputs": [
+          "Professor{x,y,gesture,facing}",
+          "SVGString"
+        ],
+        "errors": [
+          "UNSUPPORTED_GESTURE"
+        ]
+      },
+      "contractHash": "b38e9801ecd3eb7b120c20f4b567d96f30c65e474e0f23ee9f29f4c70ba932a1",
+      "dependencies": [],
+      "sourceHash": "6fcb8fc9b558f581be5b79ed806daf4f1ba4d096f9823fa3522dc1a67ecbd6fa",
+      "provenance": {
+        "source": "src/professor.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Single consistent Scholar-Commander asset; walk is a pose + CSS bob, not skeletal animation."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-renderer",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "renderSceneToSVG(scene:SceneSpec)",
+          "objectSVG(obj:ObjectSpec)"
+        ],
+        "outputs": [
+          "SVGString"
+        ],
+        "errors": [
+          "INVALID_SCENE"
+        ]
+      },
+      "contractHash": "a6386a3b6cd451cfc27febdeecaf536acbb7613a5c158d8c1a7ea442d817b3c4",
+      "dependencies": [
+        "scene-spec",
+        "professor-character"
+      ],
+      "sourceHash": "7d37725829511a4bfe6e973353ed5fbad15d7ab743ec2851bce371a1c7d42293",
+      "provenance": {
+        "source": "src/world-renderer.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "SVG only (no Canvas fallback yet); very large scenes are not virtualised."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "scene-director",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "validateCommand(cmd:unknown,scene:SceneSpec)",
+          "applyCommand(scene:SceneSpec,cmd:Command)",
+          "rebuildOnStruggle(ctx:object)"
+        ],
+        "outputs": [
+          "CommandValidation{valid:boolean,errors[]}",
+          "SceneSpec"
+        ],
+        "errors": [
+          "INVALID_COMMAND",
+          "INVALID_SCENE"
+        ]
+      },
+      "contractHash": "f5c106fedfd1e1d919551b02d28278af311799385acf86bbd236fee1323b4f21",
+      "dependencies": [
+        "scene-spec",
+        "professor-character",
+        "safety-filter"
+      ],
+      "sourceHash": "7353d20c445624dc14bef5daa27489021a92027edba39116f634a596d3bc312c",
+      "provenance": {
+        "source": "src/scene-director.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Offline directors are deterministic templates; live-AI directing needs META_AI_API_KEY (absent) and is unverified live."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-simulations",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "academyScene()",
+          "fractionsScene(opts:object)",
+          "cloudsScene(opts:object)",
+          "animalsScene(opts:object)",
+          "engineeringScene(opts:object)",
+          "sceneForTopic(topic:string)"
+        ],
+        "outputs": [
+          "SceneSpec"
+        ],
+        "errors": [
+          "INVALID_SCENE"
+        ]
+      },
+      "contractHash": "eb76b2c373b9622c5622bb59af311d0e716ec2f28448be8df56f4678a5a1c618",
+      "dependencies": [
+        "world-objects",
+        "scene-spec"
+      ],
+      "sourceHash": "e2f0a506497085d689142114d52b4a5e724fa0dbb7dedcac8ab0fb91d1b287e2",
+      "provenance": {
+        "source": "src/simulations.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Four demo simulations (fractions, clouds, animals, engineering); other topics compose primitives via the Director."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-state-sync",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "syncInteraction(store:StudentStateStore,evt:object)",
+          "recordWorldAdaptation(store:StudentStateStore,evt:object)"
+        ],
+        "outputs": [
+          "SyncResult{synced:boolean}"
+        ],
+        "errors": [
+          "INVALID_STORE"
+        ]
+      },
+      "contractHash": "55aa28725e04218303057b3b2d5a1232873e962f86a0d5caccd936e32e0af72a",
+      "dependencies": [
+        "student-state-store",
+        "scene-director"
+      ],
+      "sourceHash": "ddf8229fdd8b8f6fbb642661bfa517cc2e14f451f44b35aaab6ce3684cc51806",
+      "provenance": {
+        "source": "src/world-state.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Session-scoped like the rest of student state; no persistence across tabs."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "asset-manager",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "registerAsset(asset:object)",
+          "getAsset(id:string)",
+          "listAssets()"
+        ],
+        "outputs": [
+          "Asset{id,source,provenance,license,generated,placeholder}",
+          "AssetResult{ok:boolean,errors[]}"
+        ],
+        "errors": [
+          "MISSING_PROVENANCE",
+          "UNAUTHORISED_SOURCE"
+        ]
+      },
+      "contractHash": "d8a420ad3c1ad55870f5243d32feed0aa0066f6a332c12f5b69613f57bc686ac",
+      "dependencies": [
+        "scene-spec"
+      ],
+      "sourceHash": "c6cfda61a25293d3547d399ff17a83693c049990eb3055ce2757979893e9fcca",
+      "provenance": {
+        "source": "src/asset-manager.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "In-memory cache only; no paid/generated imagery is fetched without authorised credentials."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-interactions",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "renderSceneToSVG(scene:SceneSpec)",
+          "validateCommand(cmd:unknown,scene:SceneSpec)"
+        ],
+        "outputs": [
+          "RenderedWorld{svg,controls[]}"
+        ],
+        "errors": [
+          "INVALID_SCENE",
+          "INVALID_COMMAND"
+        ]
+      },
+      "contractHash": "4de5af4696941d013f4733784082ae37ee5df51711e2f24fb21905d04eb22064",
+      "dependencies": [
+        "world-renderer",
+        "scene-director"
+      ],
+      "sourceHash": "7d37725829511a4bfe6e973353ed5fbad15d7ab743ec2851bce371a1c7d42293",
+      "provenance": {
+        "source": "src/world-renderer.js + public/world.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Keyboard mirror covers interactive objects; free-form drag is pointer-only."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-object-generation",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "createObject(type:string,options:object)",
+          "createObjects(specs:array)"
+        ],
+        "outputs": [
+          "ObjectResult{ok:boolean,object?:ObjectSpec,error?:object}",
+          "ObjectsResult{ok:boolean,objects?:ObjectSpec[],error?:object}"
+        ],
+        "errors": [
+          "UNKNOWN_TYPE",
+          "INVALID_OBJECT",
+          "DUPLICATE_ID",
+          "INVALID_SPECS"
+        ]
+      },
+      "contractHash": "52e8a22992126b17749ecbc6a25925b865473050376aae7dd2846006f53f507e",
+      "dependencies": [
+        "scene-spec",
+        "world-objects"
+      ],
+      "sourceHash": "abada4959ca61b14090ed04a79067643aa3538761f9a20f77ec041e6de09eb92",
+      "provenance": {
+        "source": "src/world/objects.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (world/: typed factory dispatch covers all categories; unknown type rejected)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Dispatches over the 26 types in src/world-objects.js; a new type needs a factory, render branch and schema enum together.",
+        "Validates via validateObjectSpec only; teaching quality of purpose text is not judged."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "composeScene(spec:object)",
+          "createWorldState(scene:SceneSpec,opts:object)",
+          "applyInteraction(state:WorldState,event:object)"
+        ],
+        "outputs": [
+          "ComposeResult{ok:boolean,scene?:SceneSpec,error?:object}",
+          "WorldStateResult{ok:boolean,state?:WorldState,error?:object}",
+          "InteractionResult{ok:boolean,state?:WorldState,error?:object}"
+        ],
+        "errors": [
+          "INVALID_SCENE",
+          "INVALID_EVENT",
+          "BAD_REF",
+          "NOT_INTERACTIVE",
+          "UNSUPPORTED_ACTION"
+        ]
+      },
+      "contractHash": "59e62d9ba97dabe09435252a38b0800426089f6db8cdeadceb92d5e9da256cf5",
+      "dependencies": [
+        "scene-spec",
+        "world-object-generation"
+      ],
+      "sourceHash": "29070449d0accab82633ca2ec40f8b3a45a329db6341fc9b959cac7dd91ddb6b",
+      "provenance": {
+        "source": "src/world/engine.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (world/: composer + interactions mutate deterministically and purely; demo fractions/clouds/animals/volcano THROUGH engine)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Pure deterministic state machine; drag is clamped to the scene bounds and fraction invariants are enforced, but free-form physics is not simulated.",
+        "Scenes are composed from typed specs only; there is no hardcoded page per lesson by design."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-rendering",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "renderSVG(scene:SceneSpec,opts:object)",
+          "objectSVG(obj:ObjectSpec)",
+          "drawSceneToCanvas(ctx:object,scene:SceneSpec,opts:object)",
+          "focusableObjects(scene:SceneSpec)",
+          "nextFocusId(scene:SceneSpec,currentId:string,dir:number)",
+          "prefersReducedMotion(matchMediaFn:function)"
+        ],
+        "outputs": [
+          "SVGString",
+          "CanvasResult{ok:boolean,drawn?:number,error?:object}",
+          "FocusableList{objects:ObjectSpec[]}"
+        ],
+        "errors": [
+          "INVALID_SCENE",
+          "NO_CONTEXT"
+        ]
+      },
+      "contractHash": "ab0043b870ddfad49995251d388b0cfc59a0a13f4e83dd0a9cee8ce4531270b3",
+      "dependencies": [
+        "scene-spec",
+        "world-renderer"
+      ],
+      "sourceHash": "6ffb4874d8a9f6750ebda540d595392426738acf6ad8e0c05ac3023ba31911df",
+      "provenance": {
+        "source": "src/world/render-svg.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (world/: render-svg exact fractions, canvas fallback, keyboard focus + reduced-motion)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "SVG is the exact-geometry primary renderer; Canvas is a lightweight deterministic fallback (fractions/labels/basic shapes), not full parity with every SVG branch.",
+        "Very large scenes are not virtualised; the brief is a few dozen nodes per scene."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-director",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "validateDirectorCommand(cmd:unknown,scene:SceneSpec)",
+          "applyDirectorCommand(scene:SceneSpec,cmd:Command)",
+          "applyDirectorCommands(scene:SceneSpec,commands:array)",
+          "commandsFromDiagnosis(ctx:object)",
+          "struggleRebuild(ctx:object)",
+          "observeInteraction(ctx:object)"
+        ],
+        "outputs": [
+          "CommandValidation{valid:boolean,errors:[{path,rule,message}]}",
+          "DirectorResult{ok:boolean,scene?:SceneSpec,applied?:string[],error?:object}",
+          "RebuildPlan{decision:string,strategy:string,commands:Command[],scene:SceneSpec,newInteraction:object}"
+        ],
+        "errors": [
+          "INVALID_COMMAND",
+          "INVALID_SCENE"
+        ]
+      },
+      "contractHash": "4f450c6d7529888b6ad138135ec701f50c4b8c08bb8fe410402195a6288ac8ea",
+      "dependencies": [
+        "scene-spec",
+        "safety-filter",
+        "world-object-generation"
+      ],
+      "sourceHash": "877b6ea336fb0a9ed57e08b0b6148c43cf4b22078f9bd2d6023d6ce57ea3fc6b",
+      "provenance": {
+        "source": "src/world/director.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (world/director: 13 verbs apply purely; negatives malformed/unsupported/bad-ref/unsafe/duplicate; diagnosis mapping + observe decisions)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Offline directors are deterministic templates; live-AI directing needs META_AI_API_KEY (absent) and is unverified live.",
+        "Legacy kebab-case src/scene-director.js (POST /api/world/direct) is preserved unchanged; this camelCase layer serves POST /api/world/director."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-professor-movement",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "professorStateForEvent(event:string)",
+          "transitionProfessor(prof:Professor,eventOrState:string)",
+          "walkProfessorTo(prof:Professor,x:number,y:number)",
+          "professorSVGForState(prof:Professor,opts:object)"
+        ],
+        "outputs": [
+          "ProfessorState{state:string}",
+          "Professor{x,y,gesture,facing}",
+          "SVGString"
+        ],
+        "errors": [
+          "UNSUPPORTED_GESTURE"
+        ]
+      },
+      "contractHash": "10229029fa80c7a13c46d987acfa11fbccfb21e9f034b6a264cce55c0c671cfa",
+      "dependencies": [
+        "professor-character",
+        "scene-spec"
+      ],
+      "sourceHash": "d846e9b121d0f1552ae0fa190a75718d5077f8d2690d49d063a191df5a3f3a9c",
+      "provenance": {
+        "source": "src/world/professor.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (world/professor: 8 states driven by lesson events, consistent SVG, reduced-motion CSS)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Single consistent Scholar-Commander asset; walk is a pose + CSS animation, not skeletal animation.",
+        "All motion is lesson-event driven; prefers-reduced-motion freezes every state to a static pose."
+      ],
+      "status": "verified"
+    },
+    {
+      "id": "world-adaptive-loop",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": [
+          "adaptAfterWrongAnswer(ctx:object)",
+          "checkMastery(topic:string,answers:array,remainingMisconceptions:array)"
+        ],
+        "outputs": [
+          "AdaptResult{decision:string,strategy:string,scene:SceneSpec,newInteraction:object,verifyChallenge:array}",
+          "MasteryResult{mastered:boolean,score:number,threshold:number}"
+        ],
+        "errors": [
+          "INVALID_SCENE"
+        ]
+      },
+      "contractHash": "d6143e6c87e59cb3ce625b7c353c6397986fb16cc51da058f38a657f3affe2c2",
+      "dependencies": [
+        "world-director",
+        "world-state-sync",
+        "assessment-engine"
+      ],
+      "sourceHash": "3e38418db8e2d2cd98a04f06d1c8cc1c3b140adb027e42241cf4b3424b82488f",
+      "provenance": {
+        "source": "src/world/adaptive.js"
+      },
+      "testEvidence": [
+        {
+          "test": "tests/world.test.mjs (demo fractions/clouds/animals/volcano adapt after wrong answer + checkMastery withheld below 0.8)",
+          "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+          "exitCode": 0,
+          "passed": true
+        }
+      ],
+      "limitations": [
+        "Misconception-driven only; learning-style labels are rejected, never inferred or stored.",
+        "Mastery needs >=0.8 on a distinct verify challenge with no critical misconception remaining; it is withheld otherwise."
+      ],
+      "status": "verified"
+    }
+  ]
+}

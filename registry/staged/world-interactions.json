@@ -1,0 +1,36 @@
+{
+  "id": "world-interactions",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "renderSceneToSVG(scene:SceneSpec)",
+      "validateCommand(cmd:unknown,scene:SceneSpec)"
+    ],
+    "outputs": [
+      "RenderedWorld{svg,controls[]}"
+    ],
+    "errors": [
+      "INVALID_SCENE",
+      "INVALID_COMMAND"
+    ]
+  },
+  "dependencies": [
+    "world-renderer",
+    "scene-director"
+  ],
+  "sourceHash": "7d37725829511a4bfe6e973353ed5fbad15d7ab743ec2851bce371a1c7d42293",
+  "provenance": {
+    "source": "src/world-renderer.js + public/world.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Keyboard mirror covers interactive objects; free-form drag is pointer-only."
+  ]
+}

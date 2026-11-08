@@ -1,0 +1,37 @@
+{
+  "id": "asset-manager",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "registerAsset(asset:object)",
+      "getAsset(id:string)",
+      "listAssets()"
+    ],
+    "outputs": [
+      "Asset{id,source,provenance,license,generated,placeholder}",
+      "AssetResult{ok:boolean,errors[]}"
+    ],
+    "errors": [
+      "MISSING_PROVENANCE",
+      "UNAUTHORISED_SOURCE"
+    ]
+  },
+  "dependencies": [
+    "scene-spec"
+  ],
+  "sourceHash": "c6cfda61a25293d3547d399ff17a83693c049990eb3055ce2757979893e9fcca",
+  "provenance": {
+    "source": "src/asset-manager.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "In-memory cache only; no paid/generated imagery is fetched without authorised credentials."
+  ]
+}

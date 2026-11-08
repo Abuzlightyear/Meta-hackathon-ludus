@@ -1,0 +1,47 @@
+{
+  "tool": "aegis-gates",
+  "blueprint": "blueprints/professor-d.blueprint.json",
+  "valid": true,
+  "componentCount": 26,
+  "gates": [
+    {
+      "id": "G0",
+      "name": "schema",
+      "status": "passed",
+      "errors": []
+    },
+    {
+      "id": "G1",
+      "name": "contract",
+      "status": "passed",
+      "note": "operations subset of typed contract + dependency contract versions, checked by the validator"
+    },
+    {
+      "id": "G2",
+      "name": "unit",
+      "status": "not-run"
+    },
+    {
+      "id": "G3",
+      "name": "negative",
+      "status": "not-run",
+      "note": "negative fixtures are exercised via validate.mjs, see fixtures/invalid-*.json"
+    },
+    {
+      "id": "G4",
+      "name": "integration",
+      "status": "not-run"
+    },
+    {
+      "id": "G5",
+      "name": "e2e",
+      "status": "not-run"
+    },
+    {
+      "id": "G6",
+      "name": "typecheck+lint+build",
+      "status": "not-run"
+    }
+  ],
+  "errors": []
+}

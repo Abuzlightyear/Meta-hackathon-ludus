@@ -1,0 +1,39 @@
+{
+  "id": "world-simulations",
+  "version": "1.0.0",
+  "contract": {
+    "inputs": [
+      "academyScene()",
+      "fractionsScene(opts:object)",
+      "cloudsScene(opts:object)",
+      "animalsScene(opts:object)",
+      "engineeringScene(opts:object)",
+      "sceneForTopic(topic:string)"
+    ],
+    "outputs": [
+      "SceneSpec"
+    ],
+    "errors": [
+      "INVALID_SCENE"
+    ]
+  },
+  "dependencies": [
+    "world-objects",
+    "scene-spec"
+  ],
+  "sourceHash": "e2f0a506497085d689142114d52b4a5e724fa0dbb7dedcac8ab0fb91d1b287e2",
+  "provenance": {
+    "source": "src/simulations.js"
+  },
+  "testEvidence": [
+    {
+      "test": "tests/world.test.mjs (Dynamic Learning World Engine suite via npm test)",
+      "command": "node --test tests/app.test.mjs tests/adapter.test.mjs tests/flow.test.mjs tests/world.test.mjs",
+      "exitCode": 0,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Four demo simulations (fractions, clouds, animals, engineering); other topics compose primitives via the Director."
+  ]
+}

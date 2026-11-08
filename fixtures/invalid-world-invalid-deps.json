@@ -1,0 +1,39 @@
+{
+  "id": "professor-d",
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "scene-spec",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["validateSceneSpec(scene:unknown)", "validateObjectSpec(obj:unknown)", "createSceneSpec(spec:object)"],
+        "outputs": ["SceneValidation{valid:boolean,errors:[{path,rule,message}]}", "SceneSpec{id,topic,title,objects[],professor,viewport}"],
+        "errors": ["INVALID_SCENE", "INVALID_OBJECT"]
+      },
+      "dependencies": [],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["validateSceneSpec", "validateObjectSpec", "createSceneSpec"]
+    },
+    {
+      "id": "world-engine",
+      "version": "1.0.0",
+      "contract": {
+        "inputs": ["composeScene(spec:object)", "createWorldState(scene:SceneSpec,opts:object)", "applyInteraction(state:WorldState,event:object)"],
+        "outputs": ["ComposeResult{ok:boolean,scene?:SceneSpec,error?:object}", "WorldStateResult{ok:boolean,state?:WorldState,error?:object}", "InteractionResult{ok:boolean,state?:WorldState,error?:object}"],
+        "errors": ["INVALID_SCENE", "INVALID_EVENT", "BAD_REF", "NOT_INTERACTIVE", "UNSUPPORTED_ACTION"]
+      },
+      "dependencies": ["scene-spec", "nonexistent-engine"],
+      "tests": ["tests/world.test.mjs"],
+      "operations": ["composeScene", "createWorldState", "applyInteraction"]
+    }
+  ],
+  "metadata": {
+    "name": "Professor D",
+    "description": "Negative fixture: world-engine depends on a component that does not exist",
+    "aegisVersion": "2.0.0",
+    "target": "vite-typescript-react-mobile-web",
+    "createdFor": "Meta-hackathon-ludus",
+    "aiMode": "server-side-meta-ai-with-labeled-offline-demo-fallback",
+    "firstScreen": "What would you like to learn today?"
+  }
+}
