@@ -35,10 +35,10 @@ source, original runtime/support files, tests, schemas and assets are included
 without moving or rewriting them. The README directs users to FRESH.
 
 Local .venv, environment-secret files, logs and dependency directories are excluded
-by the existing .gitignore. Internal root agent instructions, mission handoffs,
-unused generated_images originals, and existing GitHub automation are left in
-the Codespace, unstaged. Selected supporting technical documents are included;
-other internal planning/handoff files remain local. No files were deleted.
+by the existing .gitignore. At the founder’s subsequent request, all remaining project instructions,
+mission handoffs, planning documents, original generated images, and the existing
+GitHub CI workflow are included. All Git-eligible project files are published;
+ignored local environments and credentials remain excluded. No files were deleted.
 
 ## Remaining verification limits
 

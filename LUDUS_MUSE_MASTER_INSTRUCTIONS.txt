@@ -1,0 +1,295 @@
+# LUDUS MUSE — COMPLETE MASTER HANDOFF PACKET
+
+This file combines the complete segmented files. For staged edits, see ZIP and `08_STAGE_PROMPTS.md`.
+
+## FILE: 00_START_HERE.md
+
+# LUDUS Muse Handoff — Read this first
+
+**Objective:** Improve the EXISTING `Meta-hackathon-ludus` application in the present Codespace. Do not replace the working code or restart from scratch. Product = **LUDUS**; the character/teacher = **Professor D**, the Doctore. Construction approach = **AEGIS V2**, NOT GENESIS.
+
+## Mission contract
+1. Read `01_MASTER_SPEC.md` and every referenced specification in this folder **before modifying code**. If context is limited, read each individually, retain a concise working checklist, and refer to the files again during implementation. Do not attempt to paste all specification text into one response.
+2. Inspect the actual repository and report existing components and limitations. Prior claims like '53 tests pass' are historical reported results, not a substitute for rerunning tests.
+3. Preserve existing live Meta API integration, Codespaces-secret handling (`META_AI_API_KEY`), contracts, verified components, and user data. Never reveal or log secrets or run commands that place them in process arguments.
+4. Implement in **gated stages**, with one stage's tests and real rendered visual acceptance before proceeding. Use `08_STAGE_PROMPTS.md` for the order.
+5. Design first, then build, inspect, critique, refine. Screenshot or real-browser inspect actual outputs where possible; if unavailable, explicitly request founder screenshots. Tests alone cannot prove artistic quality.
+6. Free promotional credit balance **reported by founder as $140**, not independently verified. Do not spend until you verify availability, product/model eligibility, pricing, whether charges can exceed free credits, and founder authorization for the proposed amount. No chargeable action just because a credit balance was mentioned.
+7. Do not push or deploy, publish, submit, purchase, or spend without explicit authorization. Repository might be public: do not publish confidential design specs or keys. Keep instructions local to Codespace by default.
+8. Give founder short plain-English statuses: DONE / TESTED / NEEDS REVIEW / BLOCKED, with precise evidence, cost/credits consumed, and next action.
+
+## North star
+A judge chooses ANY safe learning topic. Professor D determines what the student knows, diagnoses misconceptions using an adaptive 5–10-question opening assessment, then teaches by **visibly creating, moving, and manipulating accurate interactive objects in a beautiful original 2.5D academy**. The student learns by doing. Professor D adjusts the world based on demonstrated understanding and verifies transfer to a new problem. Unavailable rich assets must never cause factual fabrication or fake AI claims.
+
+## Files
+- `01_MASTER_SPEC.md` overall product and priorities
+- `02_CHARACTER_ART.md` locked character and image asset direction
+- `03_CHARACTER_ANIMATION.md` action, motion, scene synchronization
+- `04_WORLD_ENGINE.md` dynamic world authoring, simulations and reuse
+- `05_TEACHING_INTELLIGENCE.md` adaptive diagnosis and evaluation
+- `06_AI_ART_CREDITS_SECURITY.md` Meta image API, credit and security gating
+- `07_VISUAL_QA_DEMO.md` visual acceptance tests and judge flow
+- `08_STAGE_PROMPTS.md` modular execution prompts (short inputs)
+
+
+---
+
+## FILE: 01_MASTER_SPEC.md
+
+# Master Specification — LUDUS / Professor D / AEGIS V2
+
+## Identity and non-negotiables
+- **LUDUS** is the platform and academy. **Professor D** is its Doctore: the teacher physically present in the scene. Do not title the product 'LUDUS Professor D.'
+- He is a LIVE AI-powered, adaptive educator and an in-world guide, not a static mascot, a generic chatbot or a template lesson-plan generator.
+- The core stage is a cinematic, original 2D/2.5D classroom and explorable-feeling topic scenes. They do not require a full navigable 3D world or Unreal Engine.
+- Environments and objects must be *substantive teaching tools*: show a concept, respond to input, accurately change state, and support assessment.
+- Support arbitrary safe topics through **composition from verified primitives and available assets**, not a claim of unlimited generative physics or custom worlds. Disclose unsupported cases.
+- All development occurs through Muse in the existing Codespace, under AEGIS V2 reusable component and verification gates. Not GENESIS.
+
+## UX core loop
+1. Enter LUDUS Academy; Professor D welcomes student by name only if provided.
+2. Student selects a topic and goal in natural language.
+3. Professor D conducts adaptive **5–10-question** initial assessment (minimum 5 by default); question sequence adapts to answers, scope and prereqs. Offer skip/accessibility option and continue diagnosing during instruction. No universal one-size-fits-all fixed quiz.
+4. Student receives a brief human-readable learning goal; full plan stays behind a disclosure panel, not center stage.
+5. World Architect picks or composes an interactive lesson scene; Scene Director places Professor D and tools.
+6. Professor D moves, points, demonstrates, asks for learner action, explains based on actual state and real model output.
+7. Student manipulates objects and explains observations. The interaction is evidence for updating learner model.
+8. Errors trigger changed explanation/representation and another attempt, not arbitrary 'Correct!'.
+9. Exit test uses NEW problem; only then make evidence-based mastery claim; provide summary and next challenge.
+
+## Ordering of success
+**P0** Preserve functioning app, secure live AI and verify real lesson response; no breakage.
+**P1** Canonical Professor D art, well-designed LUDUS Academy, meaningful walking/gesture animation and on-screen teaching surface.
+**P1** Real adaptive assessment with actual evidence and topic-specific learner state.
+**P1** Scene Director connects live reasoning to safe structured actions that render meaningfully.
+**P1** At least one end-to-end new-topic lesson visually demonstrated in browser, with user-action, adaptation, and verification.
+**P2** More rich scene art, topic packs, voice selection, sprite refinement, image generation on demand.
+**P3** 3D worlds, autonomous arbitrary simulation generation, real-time lip sync and sophisticated character rigs.
+
+## Hard acceptance
+- Screenshot of app must immediately read as premium original academy, **not** white page with a few vector labels.
+- Character must not be tiny stick figure or generic vector professor. Consistent character master and derived poses.
+- AI lesson for 'how to build a castle' must teach real castle design tradeoffs with actual manipulable walls, gates, towers or clearly grounded supported parts; no generic 'find an everyday example' repeated filler.
+- 'Clouds', 'fractions', 'animals', and an unfamiliar safe topic must generate appropriately differentiated scenes and explanations, with valid limitations.
+- Real browser human/automated test, not unit tests alone; document if browser automation unavailable.
+
+
+---
+
+## FILE: 02_CHARACTER_ART.md
+
+# Character Art Bible — Professor D
+
+## Locked character design (consistent in all scenes)
+Visual style: **cinematic painterly semi-realistic 2D character art** with a subtle 2.5D depth treatment. Original character; mature high-end animation aesthetic, not juvenile, clip-art, flat simple SVG or direct imitation of any third-party franchise.
+- Male educator, apparent age ~40–43.
+- Strong square jaw and prominent cheekbones; light-to-medium olive complexion.
+- Realistic amber-gold eyes, intelligent and attentive.
+- Dark black hair with restrained salt-and-pepper accents; 1920s-inspired hard-part comb-over, tidy and refined.
+- Short, meticulously groomed beard.
+- Broad shoulders, athletic lean-muscular physique, confident but welcoming posture.
+- Fitted charcoal tailored vest with bronze accents; sophisticated shirt/trousers/boots, cloth/leather detail. Signature bronze educational crest combining gladius, pen, shield and book without visually cluttering the silhouette.
+- Personality in expression: perceptive, dignified, warm, humorous when suitable, never threatening or smug.
+- Title/personality: Scholar-Commander / Doctore. LUDUS is the academy brand, Professor D the instructor.
+
+## Required assets
+1. Canonical master **front full-body portrait** in neutral pose; face/garments clear, full body unclipped.
+2. Three-quarter and side silhouettes consistent with master (for walking/turning).
+3. Reference sheet: face angles, color palette, crest detail, proportions, materials and lighting.
+4. Expressive states: neutral, welcome, explanation, listen, puzzled/thinking, encouragement, verified success.
+5. Layered transparent assets or sprite atlas with tested anchors/bounds. Art export should not have arbitrary background baked into the character.
+6. Classroom/background assets separate from interactive controls and HTML text.
+
+## Image workflow
+- First inspect current code and any existing user-approved image. If no approved image exists, create a **proposed** master from the bible; request founder sign-off before mass-producing derivative poses.
+- Prefer official Meta image model *only when entitlement/credit safety and pricing are verified*. Generated images may be inconsistent; check face, eyes, hair, outfit, crest, anatomy across each iteration. Reject and regenerate bad outputs only within approved budget.
+- Maintain one source-of-truth character image/ID and color references; document prompt, parameters, rights, and asset provenance. Do not make different unrelated Professor D faces scene-to-scene.
+- If segmentation/mask model available, use it for cutout/layer extraction, with alpha edge inspection; segmentation does not animate the object.
+- Keep actual UI copy selectable/accessible HTML, not distorted words painted into generated backgrounds.
+- Focus on legible face at typical desktop size and strong silhouette for animated states.
+
+## Environment art bible
+- Premium original LUDUS Academy: antique scholarly/Roman cues, arches, carved stone, walnut woods, metal and leather, warm bronze, subdued teal/navy lighting, tasteful magical/futuristic teaching surfaces. Warm/human, not dark hostile.
+- Strong composition: a clear stage for Professor D and a dominant interactive teaching wall, reliable contrast, layered parallax depth, foreground props that serve learning, physically consistent perspective, lighting/shadows.
+- Sub-scenes can change worlds (castle fortification, sky/water cycle, savanna ecology, fractions) while retaining recognizable LUDUS visual language.
+
+
+---
+
+## FILE: 03_CHARACTER_ANIMATION.md
+
+# Professor D Animation / Performance Contract
+
+## Do not confuse 'character present' with 'animated educator'
+Animation must communicate a teaching purpose. Character should walk to the object, face it, gesture at the relevant part, observe student input, react to assessment and return to idle. No meaningless constant looping or arbitrary success animations.
+
+## Actions
+- `enter(x,y)`, `moveTo(anchor,speed)`, `face(target)`, `point(target)`, `gesture(kind)`, `present(target)`, `listen()`, `think()`, `encourage()`, `celebrateAfterVerifiedCorrect()`, `idle()`.
+- Each action has a schema, coordinates bounded to safe stage, optional duration, and declared fallback. Character motion/state managed by one coordinator to avoid contradictory simultaneous actions.
+- Scene object anchors are typed names/IDs, never freeform CSS injected by AI.
+- Arrival/gesture sequences align with spoken text or onscreen caption; navigation cannot obscure the educational object or text.
+
+## Execution realism
+Use layered 2D/2.5D sprites, sprite atlases, tweening, CSS/Canvas or a carefully chosen animation library. A full motion-capture rig is not required. Prioritize high-quality walk cycle, turn, point, idle and thoughtful expressions. Keep fps, memory and bundle size reasonable. Provide reduced-motion fallback (static states, no forced pans) and keyboard equivalents.
+
+## Proof
+Show in-browser: intro walk -> stop at teaching wall -> point to fraction object -> explain -> student moves object -> listen/thinking -> targeted response. Record screenshot sequence or reproducible manual test. Tests inspect state changes, but founder visually judges naturalness and art quality.
+
+
+---
+
+## FILE: 04_WORLD_ENGINE.md
+
+# Dynamic 2D World Engine / AI Scene Director
+
+## Architecture
+- AI **Learning Environment Architect**: interprets objective, student evidence, prerequisites; selects pedagogy and scene type; determines desired observable student actions.
+- AI **Scene Director**: outputs a structured scene *plan* and a list of allowlisted typed actions, referring to scene graph IDs.
+- Trusted **World Renderer**: validates and runs the plan; never evals AI-generated JS or lets AI freely fetch/execute code. Reuse registry components where possible.
+- Deterministic **Simulations**: math, units, and scientific causal relationships must be coded/tested, not guessed from AI art.
+- **Asset Manager**: selects approved sprites, layered backgrounds, procedurally rendered shapes and optional model-generated imagery. Maintain style/provenance/cache.
+- **Learner Model**: reports observed interactions and understanding back to Director; never infer mastery from a flashy animation.
+
+## Minimum typed commands
+`createObject(type, properties, location)`, `compose(objects, relationships)`, `show/hide`, `move/rotate/scale`, `highlight`, `annotate`, `transitionScene`, `cameraFocus`, `playValidatedSimulation`, `startInteraction`, `observeInteraction`, `characterAction`.
+Define schemas, permissions, coordinate constraints, units, collision/placement if necessary, runtime failures, and safe fallback.
+
+## Reusable primitives
+- Geometric/fraction shapes, tiling/masking, rulers and number lines
+- Draggable blocks/bricks/walls, hinges, gates, spans, levers, labels and arrows
+- Weather layers, solar heat, vapor, condensation, cloud categories, gauges
+- Animal/habitat sprites, comparison panels, anatomical labels, interactive hotspots
+- Timelines, maps, plots, diagrams and structured callouts
+- Text/image panel, validated question widget, code editor/simulator hooks
+
+## Topic proof scenarios
+**Castle:** Learner assembles wall segments, towers and gate placement for a medieval castle, learns defensive design, material/structural constraints and tradeoffs. Objects must actually drag/connect or change, not just display named rectangles. No invented historical universals.
+**Fractions:** Pizza/blocks show equal partitions with exact mathematics, equivalence, compare/compose, learner can manipulate fractions and get checked state.
+**Clouds:** Interact with temperature/humidity simplified condensation model, different cloud types and correct explanation of rising air/cooling; explicitly label simplified physical model.
+**Animals:** Habitat and real animal visuals with factual labels and meaningful classification/adaptation interaction; art should not be used as proof of biology fact.
+**Unfamiliar topic:** Build a distinct scene by composing already-verified primitives or use an explicit limited fallback. Do not hardcode the unfamiliar test.
+
+## Scene and asset hierarchy
+High fidelity scenic art behind programmatic hit targets. Rich background can be an image layer; teachable dynamic objects must be discrete, independently manipulable, labeled through accessible UI, and track their state. Never force generic generated image to pretend to be a physical simulation.
+
+## Reuse and testing
+Each world component has version, contract, asset dependencies, input/output events, security requirements, tests and known supported domains. AEGIS V2 gates validate plans and tool selection. Browser test verifies visible world render, action, student manipulation, targeted adaptation and correct results. State performance limits and cache/budget behavior.
+
+
+---
+
+## FILE: 05_TEACHING_INTELLIGENCE.md
+
+# Professor D — Adaptive Teaching & Diagnostics
+
+## Student assessment
+Default **5–10 genuinely informative questions** before the primary lesson. Count may vary by domain breadth, student's performance and objective. Normally five minimum; avoid forced exhaustion for accessibility or skip requests. Offer deeper optional diagnosis for broad expertise. Make initial diagnosis engaging and integrated with visual tasks.
+- Elicit precise learning goal, prior background, desired challenge and accessibility constraints without interrogating.
+- Use dependency map / prereq concepts, not three generic memorized prompts.
+- Questions can be oral/written, multiple-choice with meaningful distractors, short explanation, prediction, number work, visual location or manipulations; grade by real evidence.
+- Adaptive: start calibrated; escalate sophistication for correct answers; isolate incorrect reasoning with discriminating questions; avoid duplicating near-equivalent questions.
+- Track item skill, difficulty, observed answer, correctness, explanation evidence, confidence/uncertainty, misconception hypothesis and evidence, next question choice.
+- Separate fact/understanding/transfer; high confidence is not mastery. Stop only when sufficient evidence for the requested lesson starting point (not absolute topic mastery).
+
+## Teaching loop
+`diagnose -> choose objective -> choose method & scene -> demonstrate -> interact -> observe -> diagnose misconception -> change representation -> practice -> transfer-test -> summary`.
+- Use live Meta AI for novel explanations and adaptive teaching, but ground factual/verifiable tasks in validated materials or deterministic checkers. Do not use generic filler like 'think of one everyday example of the topic'.
+- Explain castle construction with actual castle construction content; cloud formation with real atmospheric process; animals with correct biology; fractions with exact pieces.
+- The interface should show the learning experience by default; diagnostic report and multi-step plan only in collapsible side panels.
+- Feedback must cite actual student action, provide an actionable hint, and avoid fake applause.
+- Allow the student to ask unrelated clarifications, switch subject and receive an honest unsupported-tool fallback when needed.
+
+## Safety
+Age appropriate interactions, child privacy consideration, accessibility, avoid unsupported medical/physical danger advice, safe learning sandbox for engineering. Do not store identifiable student data or cross-learner memory without consent and policy review.
+
+## Acceptance tests
+Five distinct learner archetypes (novice, intermediate, expert, one misconception, inconsistent answers) must yield measurably different questions, knowledge map, chosen scene/task and follow-up instructions. Test one arbitrary safe unseen topic and validate that real curriculum is delivered, not a template. A 5–10 question count alone is insufficient evidence of quality.
+
+
+---
+
+## FILE: 06_AI_ART_CREDITS_SECURITY.md
+
+# Meta Models, Art Pipeline, Credits, Security
+
+## Relevant capabilities (to verify in current official portal)
+- **Muse Wonder** runs as coding agent in existing terminal; changing its model does not select the model used by Professor D's app.
+- **Meta Model API** credentials already saved via GitHub Codespaces secret `META_AI_API_KEY`; actual access and model endpoint availability must be verified with safe API use.
+- **Muse Image** may support still image generation / editing in the portal, subject to API permission, credits and applicable terms. Do not hardcode an endpoint without verifying current official documentation. If approved, use it for Professor D master, expressions, academy environment and subject visuals.
+- **Segmentation/masks (e.g. SAM family)** may be useful for separating art layers where available through a permitted route; availability and terms must be checked, do not assume it is connected simply because Muse Code is installed.
+- **Voice** later: browser speechSynthesis as no-cost first prototype, selection and play/stop, deep distinguished British professor tone if installed; preserve coherent audio/captions. Browser voice quality varies. Any paid voice service requires permission.
+
+## Credit handling — hard gate
+Founder reports **$140 promotional/free Muse credits**. This is unverified by this packet. Before any billable call:
+1. Locate exact current credit balance, expiry, what products it covers, spending mechanics, overage policy, and model prices in provider UI / official docs. Be clear whether Muse Code credits and Meta Model API credits are separate wallets.
+2. Report proposed stage and projected maximum usage in credits/dollars; request founder approval of explicit *stage-specific allowance*, not the entire balance by default.
+3. Implement usage tracking, per-request cap, retry cap, cache and stopping conditions. Never exceed a granted allowance; avoid infinite asset-generation loops.
+4. Preserve remaining credit reserve for live AI teaching demo, QA and revisions. Spend on master assets first after approval rather than masses of disposable scenes.
+5. Stop and ask if a model's credit eligibility, overage handling, or total charge cannot be reliably established. Credits are not blanket approval to spend outside the free grant.
+
+## Security
+- Keep keys server-side only. No key in browser JavaScript, tracked files, command lines/process arguments, screenshots, console output or AI agent messages.
+- Prefer environment injection by Codespaces. Do not print credentials to verify; test presence as boolean, and use safe subprocess transport for authorized API calls.
+- Repository is public or may be: never automatically commit/push proprietary specs or image assets unless founder explicitly approves visibility; `.env` and other secret files ignored.
+- Images: maintain license/rights and creator/asset provenance for release; avoid imitating third-party copyrighted characters or artwork exactly.
+
+
+---
+
+## FILE: 07_VISUAL_QA_DEMO.md
+
+# Visual & Educational QA / Judge Demo
+
+## Why this exists
+Previous Muse report admitted it built for proof not beauty, drew basic shapes, had no real image model initially, did not see final interface in browser and used passing tests as proxy. Correct this failure with mandatory **human visual gates** and browser verification.
+
+## Stage acceptance checklist
+**Character review:** Founder can identify Professor D's canonical face, vest/crest, artistic quality, poses and silhouette. Reject childish stick figure. Check anatomy, eyes, hair, clothing and outfit continuity.
+**Academy review:** At 1366×768 screenshot, room fills page with beautiful original art, coherent 2.5D depth, clear teacher and learning area, no empty white canvas or cryptic labels. Responsive at mobile sizes; controls readable.
+**Animation review:** At least one meaningful teaching sequence: enters, walks to object, points, allows student action, reacts accurately, changes teaching; also honors reduced motion.
+**Diagnosis review:** 5–10 adaptive well-chosen questions for normal path; a different sequence for demonstrably different students; evidence and uncertainty reported. No repetitive abstract templates.
+**World review:** Interactive castle construction or unfamiliar topic assembled from registered primitives and matching styled art. Direct, substantive explanation with educational cause and effect. Fractions, clouds and animals separately smoke tested.
+**AI review:** Live authenticated API confirmed; lesson response not a static scripted template; report mode clearly in UI. Safe handling of credentials. API timeout failure reported with graceful fallback.
+**AEGIS review:** Gates and tests report actual number, evidence and untested dimensions, not blanket 'perfect'. No unauthorized spend or publishing.
+
+## Browser testing standard
+Use browser automation if available; investigate supported browser install only with founder authorization if downloading dependencies. Regardless, get *actual visual review* by founder screenshots at specified checkpoints. Unit tests cannot evaluate visual excellence. Capture version/run date and visual defects. Avoid claiming browser test when only port health HTTP 200.
+
+## Judge script (single reliable vertical slice)
+1. Open cinematic LUDUS Academy; Professor D welcomes student with motion.
+2. Judge chooses topic. Ask ~5–10 adaptive questions (consider fast demo mode with representative abbreviated screening *clearly labeled* as demo, not misrepresented as full diagnosis).
+3. Professor D demonstrates with visually rich interactive objects, performs movement and explains accurately.
+4. Judge interacts; Professor D notices an error and changes scene or representation.
+5. End with a novel transfer challenge and honest result; optionally display AEGIS audit/evidence panel.
+
+## Important demo discipline
+A stable, beautiful, fully working vertical slice beats many nonfunctional promises. Do not falsify arbitrary topic support; if unsupported tool, present useful live teaching plus generic validated visual primitives and label limitation. Prompt founder to inspect visuals after each stage, not at the end only.
+
+
+---
+
+## FILE: 08_STAGE_PROMPTS.md
+
+# Short Muse prompts — use ONE at a time
+These prompts assume the specification folder is available locally inside the Codespace, for example `docs/LUDUS_MUSE_PACK/`. If your actual folder differs, replace path. Do not paste the entire packet into a single Muse chat input.
+
+## Stage 0 — Audit and budget
+Read `docs/LUDUS_MUSE_PACK/00_START_HERE.md` and `01_MASTER_SPEC.md`, then inspect all files in that folder, the repo, and current model/credit availability. No edits, billable calls or restart yet. Return a concise staged plan, repo risk assessment, current API status, verified free-credit balance/eligibility/overage risk or explicitly unknown, and what authorization you need. Respect the full spec throughout subsequent stages.
+
+## Stage 1 — Character art
+Read `02_CHARACTER_ART.md`, `06_AI_ART_CREDITS_SECURITY.md`, and `07_VISUAL_QA_DEMO.md`. Audit existing artwork. After approved credit allowance, generate a professional cinematic painterly 2D master Professor D asset and reference sheet, checking identity consistency. Integrate master temporarily in app. Do NOT mass-produce poses until founder approves the face. Report spent promotional credits, artifacts and screenshot preview.
+
+## Stage 2 — Academy art and layout
+Read `01_MASTER_SPEC.md`, `02_CHARACTER_ART.md`, `07_VISUAL_QA_DEMO.md`. Build a premium original LUDUS Academy 2.5D layered environment and visually coherent interactive teaching wall. Remove all flat debug illustration from the student-facing default while preserving functional controls. Show actual browser screenshot and ask for a visual gate decision.
+
+## Stage 3 — Animated character
+Read `03_CHARACTER_ANIMATION.md`, `04_WORLD_ENGINE.md`, `07_VISUAL_QA_DEMO.md`. Build consistent derived poses and meaningful character movement, gestures and interactions. Show real rendered motion and ensure keyboard/reduced-motion support. Document tested action schema and demonstrate stage acceptance.
+
+## Stage 4 — Live AI and adaptive learner
+Read `05_TEACHING_INTELLIGENCE.md`, `06_AI_ART_CREDITS_SECURITY.md`, `07_VISUAL_QA_DEMO.md`. Verify genuine live Meta model responses without exposing keys, implement 5–10-question adaptive diagnostic with evidence map and varying learner archetypes. Connect choices to instructional scenes; test castle and another new topic. No generic pedagogy filler.
+
+## Stage 5 — Dynamic worlds
+Read `04_WORLD_ENGINE.md`, `05_TEACHING_INTELLIGENCE.md`, `07_VISUAL_QA_DEMO.md`. Make World Architect compose interactive environments from validated primitives and available styled assets, not hardcode demos. Demonstrate castle construction and fraction/cloud/animal flows; test invalid actions, scientific/math correctness, scene transitions, student interactions and adaptation.
+
+## Stage 6 — Full QA and demo
+Read `07_VISUAL_QA_DEMO.md`. Run all tests and actual browser interactions, request human visual review, fix meaningful defects, preserve existing working pieces and AEGIS V2 evidence. Give founder a truthful final demo checklist and key/credit/security report. Do not push, deploy or submit without permission.

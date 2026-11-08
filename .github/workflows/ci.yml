@@ -1,0 +1,24 @@
+name: CI
+on: [push, pull_request]
+permissions: contents: read
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: Unit/integration/flow/world tests (52, zero-dep)
+        run: npm test
+      - name: Blueprint + negative validation + gates (truthful not-run kept)
+        run: |
+          node tools/aegis/validate.mjs blueprints/professor-d.blueprint.json
+          for f in fixtures/invalid-*.json tests/fixtures/blueprint.invalid.json; do
+            if node tools/aegis/validate.mjs "$f"; then echo "UNEXPECTED PASS $f"; exit 1; fi
+          done
+          node tools/aegis/gates.mjs run --blueprint blueprints/professor-d.blueprint.json
+          node tools/aegis/registry.mjs list
+          node tools/aegis/registry.mjs resolve safety-filter@1.0.0
+          node tools/aegis/registry.mjs resolve world-engine@1.0.0
+          node tools/aegis/registry.mjs resolve world-director@1.0.0
+      - run: npm run build
